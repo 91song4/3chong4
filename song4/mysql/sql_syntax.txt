@@ -1,0 +1,29 @@
+제약조건:
+    NOT NULL - 값이 NULL임을 허용하지 않겠다.
+
+속성:
+    AUTO_INCREMENT - 숫자를 자동으로 증가
+
+데이터베이스 생성 
+CREATE DATABASE database_name;
+
+데이터베이스 삭제
+DROP DATABASE database_name;
+
+데이터베이스 리스트 보기
+SHOW DATABASES||SCHEMAS;
+
+테이블 리스트 보기
+SHOW TABLES;
+
+작업할 데이터베이스 선택
+USE database_name;
+
+테이블 생성
+CREATE TABLE table_name(
+    # 자료 검색할 때 노출되는 수량 보통 11
+    column_name data_type(n),
+    column_name data_type(n) 제약조건,
+    column_name data_type(n) 속성,
+    column_name data_type(n) 제약조건 속성,
+)
