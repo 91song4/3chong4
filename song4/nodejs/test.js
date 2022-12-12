@@ -6,8 +6,8 @@ const main = async function() {
 
             try {
                 console.log(First);
-            } catch {
-                rejent('Error!!');
+            } catch(err) {
+                rejent(err);
             }
         }, 1000);
     });
@@ -17,6 +17,6 @@ const main = async function() {
         console.log('Last');
         console.log(data);
     }).catch((err) => {
-        console.log('에러 발생!', err)
+        console.log('에러 발생!\n', err)
     })
 }();
