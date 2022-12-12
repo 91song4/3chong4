@@ -4,11 +4,13 @@ const main = async function() {
             // console.log(First);
             // rejent('Error!!');
 
-            try {
-                console.log(First);
-            } catch(err) {
-                // rejent(err);
-            }
+            // try {
+            //     console.log(First);
+            // } catch(err) {
+            //     rejent(err);
+            // }
+            console.log('resolve test');
+            // resolve('resolve()');
         }, 1000);
     });
 
