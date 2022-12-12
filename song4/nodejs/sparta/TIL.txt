@@ -28,3 +28,7 @@ package-lock.json: 설치한 패키지들의 상세한 정보(버전 등)
     (필요해서 그 포트를 사용중이지 않을까?)
     netstat -ano | find "원하는포트"
     taskkill /f /pid PID
+
+모듈 관리 방식
+    CommonJS: package.json -> "type": "commonjs" (default)
+    ES6: package.json -> "type": "module"
