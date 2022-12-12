@@ -1,10 +1,35 @@
-const main = async function() {
-    // 비동기 함수의 결과 값은 항상 promise 객체로 resolve 된다 라고 소개한다.
-    // 확인해보자.
-    console.log('test');
-    return 'test resolve';
+const main = async function () {
+    async function test1() {
+        return 'test1';
+    }
+
+    const test2 = async function () {
+        return 'test2';
+    }
+
+    const test3 = async () => {
+        return 'test3';
+    }
+
+    console.log(test1());
+    console.log(test2());
+    console.log(test3());
+    
+    test1().then(console.log);
+    test2().then(console.log);
+    test3().then(console.log);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }();
-
-main.then(console.log);
-
-// 진짜네.. ㄷㄷ
