@@ -23,3 +23,8 @@ npm install -> npm i
 
 node_modules/: npm을 통해 설치된 패키지들에 대한 파일들이 모인 폴더
 package-lock.json: 설치한 패키지들의 상세한 정보(버전 등)
+
+포트번호로 서버가 안 열릴 때(이미 그 포트가 사용중임)
+    (필요해서 그 포트를 사용중이지 않을까?)
+    netstat -ano | find "원하는포트"
+    taskkill /f /pid PID
