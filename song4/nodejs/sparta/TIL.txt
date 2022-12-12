@@ -1,0 +1,25 @@
+2022-12-12
+
+Promise(resolve, rejent)
+    resolve(): 메소드 Promise.then 호출
+    rejent(): 메소드 Promise.catch 호출
+
+Promise의 상태
+    대기(Pending): 이행하거나 거부되지 않은 초기 상태.
+    이행(Fulfilled): 연산이 성공적으로 완료됨.
+    거부(Rejected): 연산이 실패함.
+
+비동기 함수(Async Function)
+    결과 값은 항상 Promise 객체로 resolve 된다.
+        함수가 실행되기 전까지 Promise를 생성하지 않는다.
+    await 연산자를 사용할 수 있다.
+        
+await 연산자
+    비동기 함수 안에서만 사용할 수 있다.
+    Promise의 상태가 fulfilled || rejected 일 때 까지 함수의 실행을 중단하고 기다릴 수 있다.
+
+npm init -y
+npm install -> npm i 
+
+node_modules/: npm을 통해 설치된 패키지들에 대한 파일들이 모인 폴더
+package-lock.json: 설치한 패키지들의 상세한 정보(버전 등)
