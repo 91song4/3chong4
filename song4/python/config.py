@@ -3,7 +3,7 @@ import pymysql
 db=pymysql.connect(host='localhost',
                    port=3306,
                    user='root',
-                   password='wlgnsdl1!@',
+                   password='123123',
                    db='flask_basic',
                    charset='utf8'
                    )

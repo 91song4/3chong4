@@ -1,5 +1,7 @@
-제약조건:
-    NOT NULL - 값이 NULL임을 허용하지 않겠다.
+제약조건(constraint):
+    NOT NULL - 해당 필드는 NULL 값을 저장할 수 없습니다
+    UNIQUE - 설정된 필드는 중복된 값을 저장할 수 없습니다.
+    PRIMARY KEY - NOT NULL과 UNIQUE 제약 조건의 특징을 모두 가집니다.
 
 속성:
     AUTO_INCREMENT - 숫자를 자동으로 증가
@@ -22,8 +24,20 @@ USE database_name;
 테이블 생성
 CREATE TABLE table_name(
     # 자료 검색할 때 노출되는 수량 보통 11
-    column_name data_type(n),
-    column_name data_type(n) 제약조건,
-    column_name data_type(n) 속성,
-    column_name data_type(n) 제약조건 속성,
-)
+    column_name data_type[(n)] [제약조건 속성],
+    PRIMARY KEY (column_name)
+);
+
+데이터 추가
+INSERT INTO table_name (...column_name) 
+VALUE (...value);
+
+테이블 읽기
+자세한 문법은 mysql select syntax 검색
+SELECT [] projection [FROM table_name];
+
+데이터 수정
+UPDATE table_name SET assignment_list WHERE column_name=value;
+
+테이블 이름 변경
+ALTER TABLE old_table_name RENAME new_table_name;
