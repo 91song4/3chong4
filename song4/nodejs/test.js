@@ -1,35 +1,15 @@
+function setTimeoutFunc(time) {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            console.log(`${time}ms에 해당하는 시간이 지났습니다.`);
+            resolve();
+        },time)
+    })
+}
+
 const main = async function () {
-    async function test1() {
-        return 'test1';
-    }
-
-    const test2 = async function () {
-        return 'test2';
-    }
-
-    const test3 = async () => {
-        return 'test3';
-    }
-
-    console.log(test1());
-    console.log(test2());
-    console.log(test3());
-    
-    test1().then(console.log);
-    test2().then(console.log);
-    test3().then(console.log);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    console.log('start');
+    setTimeoutFunc(2000);
+    await setTimeoutFunc(1000);
+    console.log('end');
 }();
