@@ -1,14 +1,14 @@
 const main = async function() {
     const resolvePromise = new Promise((resolve, rejent) => {
         setTimeout(() => {
-            console.log(First);
-            rejent('Error!!');
+            // console.log(First);
+            // rejent('Error!!');
 
-            // try {
-            //     console.log(First);
-            // } catch {
-            //     rejent('Error!!');
-            // }
+            try {
+                console.log(First);
+            } catch {
+                rejent('Error!!');
+            }
         }, 1000);
     });
 
