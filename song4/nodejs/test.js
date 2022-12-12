@@ -1,24 +1,21 @@
 const main = async function() {
-    const resolvePromise = new Promise((resolve, rejent) => {
-        setTimeout(() => {
-            // console.log(First);
-            // rejent('Error!!');
+    // const resolve_promise = Promise.resolve('test resolve()');
+    const rejent_promise = Promise.rejent('test rejent()');
 
-            // try {
-            //     console.log(First);
-            // } catch(err) {
-            //     rejent(err);
-            // }
-            console.log('resolve test');
-            // resolve('resolve()');
-        }, 1000);
-    });
+    // resolve_promise.then((data) => {
+    //     console.log(data);
+    //     console.log('then');
+    // }).catch((data) => {
+    //     console.log(data);
+    //     console.log('catch');
+    // })
 
-    resolvePromise.then((data) => {
-        console.log('Middle');
-        console.log('Last');
-        console.log(data);
-    }).catch((err) => {
-        console.log('에러 발생!\n', err)
-    })
+    // rejent_promise.then((data) => {
+    //     console.log(data);
+    //     console.log('then');
+    // }).catch((data) => {
+    //     console.log(data);
+    //     console.log('catch');
+    // })
+
 }();
