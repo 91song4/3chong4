@@ -7,7 +7,7 @@ const main = async function() {
             try {
                 console.log(First);
             } catch(err) {
-                rejent(err);
+                // rejent(err);
             }
         }, 1000);
     });
