@@ -21,6 +21,19 @@
         res.cookie(Key, Value, Option): 쿠키를 설정할 때 사용합니다.
         res.clearCookie(Key, Value, Option): 쿠키를 제거할 때 사용합니다.
 
+    MongoDB
+        Document
+            데이터 하나의 단위이다.
+            한개 이상의 (Key:Value)로 이루어져 있다.
+        Collection
+            JSON형식의 여러가지 Document를 보유할 수 있다.
+            RDB의 Table과 동일한 역할이다.
+        Schema
+            Document에 어떤 종류의 값이 들어가는지 정의.
+        Model
+            데이터베이스에 데이터를 저장해줄때 데이터의 구조를 담당한다.
+            스키마를 사용하여 만들고, 작업 처리 함수들을 가지고 있다.
+            Document를 생성할 때 사용한다.
 
 2022-12-12
 
