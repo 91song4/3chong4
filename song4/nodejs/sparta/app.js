@@ -6,29 +6,29 @@ const router = require('./routes/goods.js');
 
 app.use(express.json());
 
-app.post('/', (req, res) => {
-    console.log(req.body);
+// app.post('/', (req, res) => {
+//     console.log(req.body);
 
-    res.send('"/"POST RUN');
-})
+//     res.send('"/"POST RUN');
+// })
 
-app.get('/', (req, res) => {
-    console.log(req.query);
+// app.get('/', (req, res) => {
+//     console.log(req.query);
     
-    res.status(400).json({'msg':'success'});
-})
+//     res.status(400).json({'msg':'success'});
+// })
 
-app.get('/:id', (req, res) => {
-    console.log(req.params);
-    res.send(':id URI response');
-})
+// app.get('/:id', (req, res) => {
+//     console.log(req.params);
+//     res.send(':id URI response');
+// })
 
 // app.get으로 api를 사용가능하게 만든다.
 // app.get('/', (req, res) => {
 //     res.send('Hello World!');
 // })
 
-// app.use('/', router);
+app.use('/', router);
 
 // app.listen을 통해서 서버를 연다.
 app.listen(port, () => {
