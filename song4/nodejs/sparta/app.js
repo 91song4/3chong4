@@ -11,7 +11,10 @@ app.get('/', (req, res) => {
     res.send('response');
 })
 
-
+app.get('/:id', (req, res) => {
+    console.log(req.params);
+    res.send(':id URI response');
+})
 
 // app.get으로 api를 사용가능하게 만든다.
 // app.get('/', (req, res) => {
