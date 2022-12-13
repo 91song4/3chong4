@@ -1,3 +1,27 @@
+2022-12-13
+
+req 객체
+    req.app: req 객체를 통해 app 객체에 접근할 수 있습니다.
+    req.ip: 요청한 Client의 ip 주소가 담겨 있습니다.
+    req.body: Request를 호출할 때 body로 전달된 정보가 담긴 객체입니다.
+        body-parser Middleware를 이용하여야 해당 객체를 사용할 수 있습니다.
+    req.params: 라우터 매개 변수에 대한 정보가 담긴 객체입니다.
+    req.query: Request를 호출할 때 쿼리 스트링으로 전달된 정보가 담긴 객체입니다.
+    req.cookies: Request를 호출할 때 Cookie 정보가 담긴 객체입니다.
+        cooke-parset Middleware를 이용하여야 해당 객체를 사용할 수 있습니다.
+    req.get(Header): 헤더에 저장된 값을 가져오고 싶을 때 사용합니다.
+
+res 객체
+    res.app: res 객체를 통해 app 객체에 접근할 수 있습니다.
+    res.status(코드): Response에 HTTP 상태 코드를 지정합니다.
+    res.send(데이터): 데이터를 포함하여 Response를 전달합니다.
+    res.json(json): JSON 형식으로 Response를 전달합니다.
+    res.end(): 데이터 없이 Response를 전달합니다.
+    res.direct(주소): 리다이렉트할 주소와 함께 Response를 전달합니다.
+    res.cookie(Key, Value, Option): 쿠키를 설정할 때 사용합니다.
+    res.clearCookie(Key, Value, Option): 쿠키를 제거할 때 사용합니다.
+
+
 2022-12-12
 
 Promise(resolve, rejent)
