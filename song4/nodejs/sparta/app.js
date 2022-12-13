@@ -6,9 +6,16 @@ const router = require('./routes/goods.js');
 
 app.use(express.json());
 
+app.post('/', (req, res) => {
+    console.log(req.body);
+
+    res.send('"/"POST RUN');
+})
+
 app.get('/', (req, res) => {
     console.log(req.query);
-    res.send('response');
+    
+    res.status(400).json({'msg':'success'});
 })
 
 app.get('/:id', (req, res) => {
