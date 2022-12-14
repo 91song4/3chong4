@@ -1,13 +1,14 @@
 const express = require('express');
 const connect = require('./schemas');
-const router = require('./schemas');
+const postRouter = require('./routes/posts.js');
+const commentRouter = require('./routes/comments.js');
 const app = express();
+const port = 3000;
 connect();
 
 app.use(express.json());
 
-app.use('/', [router]);
-const port = 3000;
+app.use('/', [postRouter, commentRouter]);
 
 app.listen(port, () => {
     console.log(`Server On Port: ${port}`);

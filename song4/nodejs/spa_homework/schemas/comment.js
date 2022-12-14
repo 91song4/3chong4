@@ -1,12 +1,17 @@
 const mongoose = require('mongoose');
+const ADD_KOREA_TIME = 32400000;
 
 const commentSchema = new mongoose.Schema({
+    postId: {
+        type: Object,
+        required:true,
+    },
     user: {
         type: String,
         required: true,
     },
     password: {
-        tyep: Number,
+        type: Number,
         required: true,
     },
     content: {
@@ -15,7 +20,7 @@ const commentSchema = new mongoose.Schema({
     },
     createdAt: {
         type: Date,
-        default: Date.now,
+        default: Date.now() + ADD_KOREA_TIME,
     }
 })
 
