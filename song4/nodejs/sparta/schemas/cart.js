@@ -2,9 +2,9 @@ const mongoose = require('mongoose');
 
 const cartSchema = mongoose.Schema({
     goodsId: {
-        type:Number,
-        unique:true,
-        required:true
+        type: Number,
+        unique: true,
+        required: true
     },
     quantity: {
         type: Number,
