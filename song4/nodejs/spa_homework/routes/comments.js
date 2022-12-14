@@ -13,10 +13,10 @@ router.post('/comments/:_postId', async (req, res) => {
 
     if ((await Post.find({ _id: postId })).length) {
         try {
-            await Comment.create({ postId: new ObjectId(postId), user, password, content });
+            await Comment.create({ postId: new ObjectId(postId), user, password, content: content.trim() });
             res.status(200).json({ message: "댓글을 생성하였습니다." });
         } catch {
-            if (!content)
+            if (!content.trim())
                 res.status(400).json({ message: "댓글 내용을 입력해주세요." });
             else
                 res.status(400).json({ message: "데이터 형식이 올바르지 않습니다." });
@@ -91,7 +91,7 @@ router.delete('/comments/:_commentId', async (req, res) => {
         else {
             res.status(404).json({ message: "댓글 조회에 실패하였습니다." });
         }
-    }   
+    }
     else {
         res.status(400).json({ message: "데이터 형식이 올바르지 않습니다." });
     }

@@ -29,7 +29,8 @@ router.get('/posts', async (req, res) => {
                 title: "$title",
                 createdAt: "$createdAt"
             }
-        }
+        },
+        {$sort:{createdAt:-1}},
     ]);
     res.status(200).json({ data: posts });
 })
@@ -64,15 +65,24 @@ router.put('/posts/:_postId', async (req, res) => {
     const postId = req.params._postId;
     const { password, title, content } = req.body;
     if (password && title && content) {
-        if ((await Post.find({ _id: postId })).length) {
-            await Post.updateOne({ _id: postId }, { $set: { password, title, content } })
-            res.status(200).json({ message: "게시글을 수정하였습니다." })
-        } else {
+        const [post] = await Post.find({ _id: postId });
+        if (post) {
+            if (post.password === parseInt(password)) {
+                await Post.updateOne({ _id: postId }, { $set: { title, content } })
+                res.status(200).json({ message: "게시글을 수정하였습니다." })
+            }
+            else {
+                res.status(404).json({ message: "비밀번호가 틀립니다." })
+            }
+        }
+        else {
             res.status(400).json({ message: "게시글 조회에 실패하였습니다." });
         }
-    } else {
+    }
+    else {
         res.status(400).json({ message: "데이터 형식이 올바르지 않습니다." });
     }
+
 })
 
 
@@ -81,13 +91,21 @@ router.delete('/posts/:_postId', async (req, res) => {
     const postId = req.params._postId;
     const { password } = req.body;
     if (password) {
-        if ((await Post.find({ _id: postId })).length) {
-            await Post.deleteOne({ _id: postId });
-            res.status(200).json({ message: "게시글을 삭제하였습니다." });
-        } else {
+        const [post] = await Post.find({ _id: postId });
+        if (post) {
+            if (post.password === parseInt(password)) {
+                await Post.deleteOne({ _id: postId });
+                res.status(200).json({ message: "게시글을 삭제하였습니다." });
+            }
+            else {
+                res.status(404).json({ message: "비밀번호가 틀립니다." })
+            }
+        }
+        else {
             res.status(400).json({ message: "게시글 조회에 실패하였습니다." });
         }
-    } else {
+    }
+    else {
         res.status(400).json({ message: "데이터 형식이 올바르지 않습니다." });
     }
 })
