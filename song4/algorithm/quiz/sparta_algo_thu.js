@@ -27,7 +27,7 @@ function solution(numbers)
     }
 
 
-    return parseInt(answer);
+    return +answer;
 }
 
 console.log(solution("onetwothreefourfivesixseveneightnine"));
