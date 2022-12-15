@@ -4,20 +4,8 @@ const Comment = require('../schemas/comment.js');
 const Post = require('../schemas/post.js');
 const mongoose = require('mongoose');
 const { ObjectId } = mongoose.Types;
-const ADD_KOREA_TIME = 32400000;
+const dbUtcToKst = require('./index.js');
 
-
-// UTC to KST
-function utcToKst(dbTimes)
-{
-    for (const utcTime of dbTimes)
-    {
-        const dbUTC = utcTime.createdAt;
-        const toKST = dbUTC.getTime() + ADD_KOREA_TIME;
-        utcTime.createdAt = new Date(toKST)
-    }
-    return dbTimes;
-}
 
 // 댓글 생성
 router.post('/:_postId', async (req, res) => {
@@ -56,7 +44,7 @@ router.get('/:_postId', async (req, res) => {
                 }
             }
         ])
-        utcToKst(comment);    // UTC to KST
+        dbUtcToKst(comment);    // UTC to KST
 
         res.status(200).json({ data: comment });
     }
