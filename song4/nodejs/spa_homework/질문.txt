@@ -1,0 +1,6 @@
+1.  라우터를 나누었는데 app.js 에서 한개의 app.use를 통해서 나누어 전달한다.
+    이부분이 app.use에서 나뉜다면 좋을까 나쁠까?
+
+2.  post, comment관련 라우터는 모아뒀는데 routes/index.js 에는 어떤걸 넣어야 할까?
+
+3.  app.use(express.json())처럼 app.js에서 몽구스 objectId를 사용하게끔 설정시키는 방법이 있을까?

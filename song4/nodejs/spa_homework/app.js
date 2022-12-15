@@ -8,7 +8,8 @@ connect();
 
 app.use(express.json());
 
-app.use('/', [postRouter, commentRouter]);
+app.use('/posts', postRouter);
+app.use('/comments', commentRouter);
 
 app.listen(port, () => {
     console.log(`Server On Port: ${port}`);

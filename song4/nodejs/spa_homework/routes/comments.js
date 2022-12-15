@@ -4,10 +4,23 @@ const Comment = require('../schemas/comment.js');
 const Post = require('../schemas/post.js');
 const mongoose = require('mongoose');
 const { ObjectId } = mongoose.Types;
+const ADD_KOREA_TIME = 32400000;
 
+
+// UTC to KST
+function utcToKst(dbTimes)
+{
+    for (const utcTime of dbTimes)
+    {
+        const dbUTC = utcTime.createdAt;
+        const toKST = dbUTC.getTime() + ADD_KOREA_TIME;
+        utcTime.createdAt = new Date(toKST)
+    }
+    return dbTimes;
+}
 
 // 댓글 생성
-router.post('/comments/:_postId', async (req, res) => {
+router.post('/:_postId', async (req, res) => {
     const postId = req.params._postId;
     const { user, password, content } = req.body;
 
@@ -28,7 +41,7 @@ router.post('/comments/:_postId', async (req, res) => {
 
 
 // 댓글 목록 조회
-router.get('/comments/:_postId', async (req, res) => {
+router.get('/:_postId', async (req, res) => {
     const postId = req.params._postId;
     try {
         const comment = await Comment.aggregate([
@@ -43,6 +56,8 @@ router.get('/comments/:_postId', async (req, res) => {
                 }
             }
         ])
+        utcToKst(comment);    // UTC to KST
+
         res.status(200).json({ data: comment });
     }
     catch {
@@ -52,7 +67,7 @@ router.get('/comments/:_postId', async (req, res) => {
 
 
 // 댓글 수정
-router.put('/comments/:_commentId', async (req, res) => {
+router.put('/:_commentId', async (req, res) => {
     const commentId = req.params._commentId;
     const { password, content } = req.body;
     test = "";
@@ -81,7 +96,7 @@ router.put('/comments/:_commentId', async (req, res) => {
 
 
 // 댓글 삭제
-router.delete('/comments/:_commentId', async (req, res) => {
+router.delete('/:_commentId', async (req, res) => {
     const commentId = req.params._commentId;
     const { password } = req.body;
     if (password) {
