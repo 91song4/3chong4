@@ -18,21 +18,20 @@ function solution(numbers)
 
     for (const num of numbers)
     {
+        checkNum += num;
         if (nums[checkNum])
         {
             answer += nums[checkNum];
-            checkNum = num;
+            checkNum = '';
         }
-        else
-            checkNum += num;
     }
 
 
     return answer;
 }
 
-solution("onetwothreefourfivesixseveneightnine");
-solution("onefourzerosixseven");
+console.log(solution("onetwothreefourfivesixseveneightnine"));
+console.log(solution("onefourzerosixseven"));
 
 // 문제 설명
 
