@@ -11,7 +11,8 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.18.2",
-    "mongoose": "^6.8.0"
+    "mongoose": "^6.8.0",
+    "mongose": "^0.0.2-security"
   },
   "devDependencies": {
     "jest": "^29.3.1",

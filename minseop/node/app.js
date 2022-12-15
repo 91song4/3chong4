@@ -2,9 +2,21 @@ const express = require('express')  // require
 const app = express()
 const port = 3000
 
-const postRouter = require('./routes/post.js')
+const postRouter = require('./routes/posts.js')
+const connect = require('./schemas/')
+connect()
 
-app.use(express.json())
+app.use(express.json());    // 바디에 데이터가 들어왔을때 사용할 수 있도록 만들어준답
+app.use("/posts", [postRouter])
+
+app.get('/', (req,res) => {
+    res.send('첫페이지 입니다')
+})
+
+app.listen(port, () => {
+    console.log(port, '포트로 서버를 열었어요( app.listen )')
+})
+
 
 // app.post('/', (req, res) => {
 //     console.log(req.body)
@@ -21,15 +33,3 @@ app.use(express.json())
 //     res.send(':id / req.params 실행')
 // })
 
-// 전역 미들웨어
-
-
-app.use("/posts", postRouter)
-
-// app.get('/', (req,res) => {
-//     res.send('첫페이지 입니다')
-// })
-
-app.listen(port, () => {
-    console.log(port, '포트로 서버를 열었어요( app.listen )')
-})
