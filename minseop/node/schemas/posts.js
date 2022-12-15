@@ -39,3 +39,15 @@ const postsSchema = new mongoose.Schema({
 })
 
 module.exports = mongoose.model("posts", postsSchema)
+
+
+// for (let i = 0; i < postId.length; i++) {
+//         if (아이디 검사) {
+//             if(비밀번호 검사) {
+//                     db에 업데이트(
+//             }else{
+//                 비빌번호가 틀렸어염
+//             }
+//         }
+//     }
+//     아이디가 없습니다
