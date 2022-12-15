@@ -14,7 +14,7 @@ router.post('/:_postId', async (req, res) => {
 
     if ((await Post.find({ _id: postId })).length) {
         try {
-            await Comment.create({ postId: new ObjectId(postId), user, password, content: content.trim() });
+            await Comment.create({ postId, user, password, content: content.trim() });
             res.status(200).json({ message: "댓글을 생성하였습니다." });
         } catch {
             if (!content.trim())
