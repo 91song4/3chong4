@@ -1,5 +1,8 @@
 // 보통 index.js에 어떤 내용을 담나요?
 // 프로그램마다 다르지만 보통 속해있지 않거나, 공용적인 내용을 적습니다.
+const postRouter = require('./posts.js');
+const commentRouter = require('./comments.js');
+
 const ADD_KOREA_TIME = 32400000;
 
 // UTC to KST
@@ -14,4 +17,4 @@ function dbUtcToKst(dbTimes)
     return dbTimes;
 }
 
-module.exports = dbUtcToKst;
+module.exports = { dbUtcToKst, postRouter, commentRouter };

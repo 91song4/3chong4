@@ -2,9 +2,9 @@ const express = require('express');
 const router = express.Router();
 const Comment = require('../schemas/comment.js');
 const Post = require('../schemas/post.js');
+const {dbUtcToKst} = require('./index.js');
 const mongoose = require('mongoose');
-const { ObjectId } = mongoose.Types;
-const dbUtcToKst = require('./index.js');
+
 
 
 // 댓글 생성
@@ -30,10 +30,11 @@ router.post('/:_postId', async (req, res) => {
 
 // 댓글 목록 조회
 router.get('/:_postId', async (req, res) => {
+    console.log('댓글 목록 조회', req.params._postId);
     const postId = req.params._postId;
     try {
         const comment = await Comment.aggregate([
-            { $match: { postId: new ObjectId(postId) } },
+            { $match: { postId: postId } },
             {
                 $project: {
                     _id: 0,
@@ -44,7 +45,7 @@ router.get('/:_postId', async (req, res) => {
                 }
             }
         ])
-        dbUtcToKst(comment);    // UTC to KST
+        // dbUtcToKst(comment);    // UTC to KST
 
         res.status(200).json({ data: comment });
     }
