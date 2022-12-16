@@ -3,11 +3,12 @@ const app = express()
 const port = 3000
 
 const postRouter = require('./routes/posts.js')
+const commentRouter = require('./routes/comments.js')
 const connect = require('./schemas/')
 connect()
 
 app.use(express.json());    // 바디에 데이터가 들어왔을때 사용할 수 있도록 만들어준답
-app.use("/posts", [postRouter])
+app.use("/posts", [postRouter,commentRouter])
 
 app.get('/', (req,res) => {
     res.send('첫페이지 입니다')

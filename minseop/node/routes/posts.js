@@ -33,30 +33,48 @@ router.post("/", async (req, res) => {
         })
     }
     const createdPosts = await Posts.create({user, password, title, content});
-    res.json({posts: createdPosts});
+    res.status(201).json({posts: createdPosts});
 })
 
-//게시물 수정
+// 게시물 수정
 router.put('/:_postId', async (req, res) => {
-    const {_postId} = req.params;
-    const {password, title, content} = req.body;
+    const {_postId} = req.params;       // 이보형
+    const {password, title, content} = req.body;    // 정보
 
-    const existsPosts = await Posts.find({_id : _postId});
+    const existsPosts = await Posts.find({_id : _postId});  //
     const [postPw] = existsPosts.map((post) => post.password);
 
-    console.log('postPw', postPw); // 일치하는 pw 가져옴
-    console.log('password', password)
-    if (postPw === password) {
+    //const postPw = existsPosts[0].password;   // 보형님 pw
+    if (postPw === password) {      // Db보형pw === input보형pw
         await Posts.updateOne(
             {_id: _postId},
             {$set: { title, content}});
-        return res.status(201).json(
+        return res.status(200).json(
             {"message": "게시글을 수정하였습니다."});
     } else {
         return res.status(400).json(
             {"message": "비밀번호가 틀렸습니다."});
     }
 });
+
+// 게시물 삭제
+router.delete('/:_postId', async (req, res) => {
+    const {_postId} = req.params;
+    const {password} = req.body;
+
+    const existsPosts = await Posts.find({_id : _postId});
+
+    // const [postPw] = existsPosts.map((post) => post.password);
+    const postPw = existsPosts[0].password;
+
+    if (postPw === password) {
+        await Posts.deleteOne({_id : _postId});
+        res.status(200).json({message: "게시물 삭제완료"});
+    }else {
+        return res.status(400).json(
+            {"message": "비밀번호가 틀렸습니다."});
+    }
+})
 
 //     const existsPosts = await Posts.find()
 //     // const postId = existsPosts.map((post) => post._id)

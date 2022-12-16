@@ -51,3 +51,9 @@ module.exports = mongoose.model("posts", postsSchema)
 //         }
 //     }
 //     아이디가 없습니다
+//--------게시물 삭제
+// if (dbPw === inputPw) {
+//     게시물삭제
+// } else {
+//     비밀번호 틀림
+// }
