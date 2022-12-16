@@ -15,7 +15,6 @@ connect();
 app.use(express.json());
 
 let router = Router.commentRouter;
-router = Router.postRouter;
 
 app.use('/*', (req, res, next) =>
 {
