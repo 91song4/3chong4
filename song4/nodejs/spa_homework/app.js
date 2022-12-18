@@ -1,86 +1,39 @@
 const express = require('express');
 const mongoose = require('mongoose');
 
-const { postRouter } = require('./routes');
-const { commentRouter } = require('./routes');
+const postRouter = require('./routes/posts.js');
+const commentRouter = require('./routes/comments');
 
-const Router = require('./routes/index.js');
+const { setObjectId } = require('./routes/index');
+
 const connect = require('./schemas');
 
-const { ObjectId } = mongoose.Types;
 const app = express();
 const port = 3000;
 
 connect();
 app.use(express.json());
 
-let router = Router.commentRouter;
-
-app.use('/*', (req, res, next) =>
+postRouter.param('_postId', (req, res, next, id) =>
 {
-    const targetRouter = req.originalUrl.split('/')[1];
-    console.log(targetRouter);
-    if (targetRouter === 'posts')
-        router = Router.postRouter;
-    else
-        router = Router.commentRouter;
-    
-    if (router === Router.postRouter)
-        console.log('postRouter');
-    else if (router === Router.commentRouter)
-        console.log('commentRouter');
-    console.log('---------------------------------------')
+    setObjectId('_postId', req, id);
     next();
 })
 
-router.param('_postId', (req, res, next, id) =>
+commentRouter.param('_postId', (req, res, next, id) =>
 {
-    console.log('test1 here')
-    try
-    {
-        req.params._postId = new ObjectId(id);
-    } catch {        
-    }
-    finally
-    {
-        next();
-    }
+    setObjectId('_postId', req, id);
+    next();
 })
 
-// router.param('_postId', (req, res, next, id) =>
-// {
-//     console.log('test3 here')
-//     try
-//     {
-//         req.params._postId = new ObjectId(id);
-//     } catch {
-//     }
-//     finally
-//     {
-//         next();
-//     }
-// })
-
-Router.commentRouter.param('_commentId', (req, res, next, id) =>
+commentRouter.param('_commentId', (req, res, next, id) =>
 {
-    console.log('test2 here')
-    try
-    {
-        req.params._commentId = new ObjectId(id);
-    } catch {
-    }
-    finally
-    {
-        next();
-    }
+    setObjectId('_commentId', req, id);
+    next();
 })
 
-
-
-// req를 인터셉트해서 다시 다음 동작이 하도록 보내주기.
-
-app.use('/posts', router);
-app.use('/comments', router);
+app.use('/posts', postRouter);
+app.use('/comments', commentRouter);
 
 app.listen(port, () =>
 {

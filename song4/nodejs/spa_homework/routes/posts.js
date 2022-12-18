@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Post = require('../schemas/post.js');
 const mongoose = require('mongoose');
-const { dbUtcToKst } = require('./index.js');
+const {dbUtcToKst} = require('./index.js');
 
 
 
@@ -36,7 +36,7 @@ router.get('/', async (req, res) =>
         },
         { $sort: { createdAt: -1 } },
     ]);
-    // dbUtcToKst(posts);    // UTC to KST
+    dbUtcToKst(posts);    // UTC to KST
 
 
     res.status(200).json({ data: posts });
@@ -63,7 +63,7 @@ router.get('/:_postId', async (req, res) =>
                 }
             },
         ])
-        // dbUtcToKst(post);    // UTC to KST
+        dbUtcToKst(post);    // UTC to KST
 
         res.status(200).json({ data: post });
     } catch {

@@ -45,7 +45,7 @@ router.get('/:_postId', async (req, res) => {
                 }
             }
         ])
-        // dbUtcToKst(comment);    // UTC to KST
+        dbUtcToKst(comment);    // UTC to KST
 
         res.status(200).json({ data: comment });
     }
@@ -56,7 +56,9 @@ router.get('/:_postId', async (req, res) => {
 
 
 // 댓글 수정
-router.put('/:_commentId', async (req, res) => {
+router.put('/:_postId/:_commentId', async (req, res) => {
+    console.log('댓글 목록 조회', req.params._postId);
+    console.log('댓글 목록 조회', req.params._commentId);
     const commentId = req.params._commentId;
     const { password, content } = req.body;
     test = "";
