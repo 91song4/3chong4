@@ -1,4 +1,6 @@
-console.log('자바스크립트!') //줄바꿈시 세미콜론 자동 삽입 (automatic semicolon insetion)
-console.log('automatic semicolon insertion');
+'use strict';
 
-[1, 2].forEach(console.log)
+// 행성 변수 이름짓기
+let currLivedPlanet = 'Earth';
+// 현재 방문자 변수 이름 짓기
+let currConnectingUser = 'Song';
