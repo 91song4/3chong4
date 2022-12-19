@@ -20,25 +20,10 @@ function dbUtcToKst(dbTimes)
     return dbTimes;
 }
 
-// function setObjectId(name, req, id)
-// {
-//     try { req.params[name] = new ObjectId(id); }
-//     catch { }
-// }
-
-function setObjectId(req, res, next)
+function setObjectId(name, req, id)
 {
-    if (req.params['_postId'])
-    {
-        req.params['_postId'] = ObjectId(req.params['_postId']);
-    }
-
-    if (req.params['_commentId'])
-    {
-        req.params['_commentId'] = ObjectId(req.params['_commentId']);
-    }
-
-    next();
+    try { req.params[name] = new ObjectId(id); }
+    catch { }
 }
 
 module.exports = { setObjectId, dbUtcToKst };

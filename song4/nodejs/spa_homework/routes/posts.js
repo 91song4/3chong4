@@ -5,7 +5,6 @@ const mongoose = require('mongoose');
 const {dbUtcToKst} = require('./index.js');
 
 
-
 // 게시글 작성
 router.post('/', async (req, res) =>
 {
