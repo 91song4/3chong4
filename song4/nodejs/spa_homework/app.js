@@ -14,26 +14,26 @@ const port = 3000;
 connect();
 app.use(express.json());
 
-postRouter.param('_postId', (req, res, next, id) =>
-{
-    setObjectId('_postId', req, id);
-    next();
-})
+// postRouter.param('_postId', (req, res, next, id) =>
+// {
+//     setObjectId('_postId', req, id);
+//     next();
+// })
 
-commentRouter.param('_postId', (req, res, next, id) =>
-{
-    setObjectId('_postId', req, id);
-    next();
-})
+// commentRouter.param('_postId', (req, res, next, id) =>
+// {
+//     setObjectId('_postId', req, id);
+//     next();
+// })
 
-commentRouter.param('_commentId', (req, res, next, id) =>
-{
-    setObjectId('_commentId', req, id);
-    next();
-})
+// commentRouter.param('_commentId', (req, res, next, id) =>
+// {
+//     setObjectId('_commentId', req, id);
+//     next();
+// })
 
-app.use('/posts', postRouter);
-app.use('/comments', commentRouter);
+app.use('/posts', [setObjectId, postRouter]);
+app.use('/comments', [setObjectId, commentRouter]);
 
 app.listen(port, () =>
 {
