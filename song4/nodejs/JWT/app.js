@@ -5,10 +5,11 @@ const payload = {
 }
 const secretKey = "mysecretkey";
 
+let token;
 // Create JWT
 (async () => {
     console.log('test1');
-    var token = jwt.sign(
+    token = jwt.sign(
         payload,
         secretKey,
         { expiresIn: "1s" }
@@ -19,8 +20,8 @@ console.log('test2');
 setTimeout(() => {
     console.log('test3');
     // verify JWT
-    const verifyToken = jwt.verify(token, secretKey);
-    // const verifyToken = jwt.verify(token, "secretKey");
+    const verifyToken = jwt.verify(token, secretKey);   // 만료시간 지났을 때: jwt expired
+    // const verifyToken = jwt.verify(token, "secretKey"); //시크릿키 틀릴 때: invalid signature
     console.log(verifyToken);
     
 }, 1500);
