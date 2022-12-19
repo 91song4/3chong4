@@ -4,9 +4,14 @@ const payload = {
     "myPayloadData": 1234,
 }
 
+// Create JWT
 const secretKey = "mysecretkey";
 const token = jwt.sign(
-    { payload },
+    payload,
     secretKey
 );
-console.log(token);
+// console.log(token);
+
+// JWT decoded
+const decodeToken = jwt.decode(token);
+console.log(decodeToken);
