@@ -7,6 +7,10 @@ function solution(numbers) {
         numbers = numbers.replaceAll(item, index);
 
     })
+    // for (let i = 0; i <numbers.length; i++) {
+    //     console.log(numbers.split(find[i]).join(i))
+    //     console.log(i)
+    // }
 
     return Number(numbers)
 }
