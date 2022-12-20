@@ -70,7 +70,10 @@ router.post("/auth", async (req,res) =>{
     })
 })
 
-
+const authMiddleware = require("./middlewares/auth-middleware")
+router.get("/users/me", authMiddleware, async (req,res) => {
+    res.json({user: res.locals.user});
+})
 
 
 app.use("/api", express.urlencoded({ extended: false }), router);
