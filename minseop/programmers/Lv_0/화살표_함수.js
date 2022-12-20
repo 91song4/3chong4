@@ -17,5 +17,5 @@ let numbers = [1,2,3,4,5];
 // let arry = numbers.map(function (numbers) {return numbers});
 // let arry = numbers.map((numbers) =>{return numbers})
 //  let arry = numbers.map(numbers =>{return numbers})
- let arry = numbers.map(numbers =>  numbers)
+let arry = numbers.map(numbers =>  numbers)
 console.log(arry)
