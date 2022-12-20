@@ -3,6 +3,7 @@ const router = express.Router();
 const Post = require('../schemas/post.js');
 const mongoose = require('mongoose');
 const {dbUtcToKst} = require('./index.js');
+const {setObjectId} = require('./index.js');
 
 
 // 게시글 작성
@@ -43,7 +44,7 @@ router.get('/', async (req, res) =>
 
 
 // 게시글 상세 조회
-router.get('/:_postId', async (req, res) =>
+router.get('/:_postId', setObjectId, async (req, res) =>
 {
     console.log('게시글 상세 조회', req.params._postId);
     const postId = req.params._postId;
@@ -72,7 +73,7 @@ router.get('/:_postId', async (req, res) =>
 
 
 // 게시글 수정
-router.put('/:_postId', async (req, res) =>
+router.put('/:_postId', setObjectId, async (req, res) =>
 {
     console.log('게시글 수정', req.params._postId);
     const postId = req.params._postId;
@@ -106,7 +107,7 @@ router.put('/:_postId', async (req, res) =>
 
 
 // 게시글 삭제
-router.delete('/:_postId', async (req, res) =>
+router.delete('/:_postId', setObjectId, async (req, res) =>
 {
     const postId = req.params._postId;
     const { password } = req.body;

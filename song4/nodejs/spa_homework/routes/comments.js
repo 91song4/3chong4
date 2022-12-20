@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
 
 
 // 댓글 생성
-router.post('/:_postId', async (req, res) => {
+router.post('/:_postId', setObjectId, async (req, res) => {
     const postId = req.params._postId;
     const { user, password, content } = req.body;
 
@@ -29,7 +29,7 @@ router.post('/:_postId', async (req, res) => {
 
 
 // 댓글 목록 조회
-router.get('/:_postId', async (req, res) => {
+router.get('/:_postId', setObjectId, async (req, res) => {
     console.log('댓글 목록 조회', req.params._postId);
     const postId = req.params._postId;
     try {
@@ -56,7 +56,7 @@ router.get('/:_postId', async (req, res) => {
 
 
 // 댓글 수정
-router.put('/:_postId/:_commentId', async (req, res) => {
+router.put('/:_postId/:_commentId', setObjectId, async (req, res) => {
     console.log('댓글 목록 조회', req.params._postId);
     console.log('댓글 목록 조회', req.params._commentId);
     const commentId = req.params._commentId;
@@ -87,7 +87,7 @@ router.put('/:_postId/:_commentId', async (req, res) => {
 
 
 // 댓글 삭제
-router.delete('/:_commentId', async (req, res) => {
+router.delete('/:_commentId', setObjectId, async (req, res) => {
     const commentId = req.params._commentId;
     const { password } = req.body;
     if (password) {
