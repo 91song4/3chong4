@@ -5,10 +5,17 @@ const port = 3000;
 const goodsRouter = require('./routes/goods');
 const cartsRouter = require("./routes/cart");
 const connect = require("./schemas/index");
+
 connect();
 
-app.use(express.json())
-app.use("/api", [goodsRouter, cartsRouter]);
+app.use(express.json()); // post, put 전달된 body 데이터를 req.body로 사용할 수 있도록 만든 bodyparser
+
+app.use((req, res, next) => {
+  console.log('Request URL:', req.originalUrl, ' - ', new Date());
+  next();
+});
+
+app.use("/api", [goodsRouter, cartsRouter]); // api가 사용되기 위한 라우터를 등록
 
 app.get('/', (req, res) => {
     res.send('Hello World!');
