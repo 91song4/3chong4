@@ -7,7 +7,6 @@ const { Op } = require('sequelize');
 const { User } = require('./models');
 
 const authMiddleware = require('./middlewares/auth-middleware.js');
-const { userInfo } = require('os');
 
 
 // mongoose.set('strictQuery', false);
