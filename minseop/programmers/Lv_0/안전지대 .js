@@ -23,16 +23,16 @@ function solution(board) {
                         nextX >= 0 &&
                         nextX < board.length &&
                         nextY >= 0 &&
-                        nextY < board.length && board[nextX][nextY] === 0
-                    ){
+                        nextY < board[i].length && board[nextX][nextY] === 0
+                    ) {
 
-                    board[nextX][nextY] = 2;
+                        board[nextX][nextY] = 2;
                     }
                 })
             }
         }
     }
-    board.forEach(a => a.forEach( b => b === 0 ? answer++ : 0))
+    board.forEach(a => a.forEach(b => b === 0 ? answer++ : 0))
     console.log(board)
     return answer
 }

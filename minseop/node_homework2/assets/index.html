@@ -62,8 +62,9 @@
               placeholder="아이디"
               aria-label="Username"
               aria-describedby="basic-addon1"
-              id="inputEmail"
+              id="inputNickname"
             />
+<!--              id="inputEmail"-->
           </div>
           <div class="input-group mb-3">
             <div class="input-group-prepend">
@@ -168,14 +169,18 @@
       }
 
       function sign_in() {
-        let email = $("#inputEmail").val();
+          console.log("index html입니당")
+        // let email = $("#inputEmail").val();
+        let nickname = $("#inputNickname").val();
         let password = $("#inputPassword").val();
+          console.log(nickname)
         $.ajax({
           type: "POST",
           url: "/api/auth",
           data: {
-            email: email,
-            password: password,
+            // email: email,
+              nickname: nickname,
+              password: password,
           },
           success: function (response) {
             localStorage.setItem("token", response.token);
@@ -185,6 +190,7 @@
             customAlert(error.responseJSON.errorMessage);
           },
         });
+          console.log("ajax 끝남")
       }
 
       function customAlert(text) {
