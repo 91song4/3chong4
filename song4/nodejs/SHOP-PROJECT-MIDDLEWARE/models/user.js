@@ -3,7 +3,8 @@ const mongoose = require("mongoose");
 const userSchema = new mongoose.Schema({
     email: String,
     nickname: String,
-    password: String
+    password: String,
+    salt:String
 });
 
 userSchema.virtual("userId").get(function () {
