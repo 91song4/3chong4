@@ -1,10 +1,12 @@
 const crypto = require("crypto");
+const jwt = require("jsonwebtoken");
 const { Op } = require("sequelize");
 
 const { User } = require("../models");
 
 
 async function setPasswordToHash(req, res, next) {
+    console.log("setPasswordToHash() access");
     const { nickname, password } = req.body;
     const userObject = await User.findOne({
         where: { nickname },
@@ -24,12 +26,23 @@ async function setPasswordToHash(req, res, next) {
     next();
 }
 
-async function auth_middleware(req, res,next)  {
-    console.log(req.params);
+async function auth_middleware(req, res, next) {
     const token = req.cookies.jwt;
-    const userObject = await User.find
-    console.log(token);
-    next();
+    
+    try {
+        const { userId } = jwt.verify(token, "SecretKey");
+        User.findByPk(userId)
+            .then((user) => {
+                
+                res.locals.user = user.dataValues;
+                next();
+            });
+        
+    } catch {
+        console.error.bind(console, "error:");
+        res.status(400).json({"errorMessage":"로그인이 필요합니다."})
+    }
+
 }
 
 

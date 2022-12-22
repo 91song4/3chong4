@@ -10,6 +10,10 @@ const router = express.Router();
 
 // 회원가입
 router.post("/", async (req, res) => {
+    if (req.cookies.jwt !== undefined) {
+        res.status(400).json({ "errorMessage": "이미 로그인이 되어있습니다." });
+    }
+    
     const { nickname, email, password, confirmPassword } = req.body;
 
     // 조건 검사
@@ -51,6 +55,7 @@ router.post("/", async (req, res) => {
             "errorMessage": "중복된 닉네임 입니다."
         });
     }
+    
     const salt = crypto.randomBytes(128).toString("base64");
     const hash = crypto.createHash("sha512").update(password + salt).digest("hex");
     await User.create({ email, nickname, password: hash, salt });

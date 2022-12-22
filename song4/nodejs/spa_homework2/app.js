@@ -5,13 +5,13 @@ const usersRouter = require("./routes/users.js");
 const authRouter = require("./routes/auth.js");
 const app = express();
 
-app.use("/api", express.json(), express.urlencoded({ extended: false }), cookieParser());
+app.use("/api", express.json(), cookieParser());
 
 app.use("/api/users", usersRouter);
 app.use("/api/auth", authRouter);
 
 app.use("/", (req, res) => {
-    res.send('Hello');
+    res.send('Hello test');
 })
 
 
