@@ -2,8 +2,7 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const { Op } = require("sequelize");
-const {setPasswordToHash} = require("./");
-const { auth_middleware } = require("./index.js");
+const {setPasswordToHash} = require(".");
 
 const { User } = require("../models");
 
@@ -30,7 +29,6 @@ router.post("/", setPasswordToHash, (req, res) => {
     )
     
     res.status(200).cookie('jwt', token).json({ token });
-    // res.end();
 })
 
 module.exports = router;

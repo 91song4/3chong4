@@ -1,14 +1,17 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
 
-const usersRouter = require("./routes/users.js");
-const authRouter = require("./routes/auth.js");
+const usersRouter = require("./routes/signup.js");
+const authRouter = require("./routes/login.js");
+const postRouter = require("./routes/posts.js");
+
 const app = express();
 
 app.use("/api", express.json(), cookieParser());
 
-app.use("/api/users", usersRouter);
-app.use("/api/auth", authRouter);
+app.use("/api/signup", usersRouter);
+app.use("/api/login", authRouter);
+app.use("/api/posts", postRouter);
 
 app.use("/", (req, res) => {
     res.send('Hello test');

@@ -1,9 +1,7 @@
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
-const { Op } = require("sequelize");
 
 const { User } = require("../models");
-
 
 async function setPasswordToHash(req, res, next) {
     console.log("setPasswordToHash() access");
