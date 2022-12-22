@@ -26,19 +26,19 @@ async function setPasswordToHash(req, res, next) {
 
 async function auth_middleware(req, res, next) {
     const token = req.cookies.jwt;
-    
+
     try {
         const { userId } = jwt.verify(token, "SecretKey");
         User.findByPk(userId)
             .then((user) => {
-                
+                console.log(userId);
                 res.locals.user = user.dataValues;
                 next();
             });
-        
+
     } catch {
         console.error.bind(console, "error:");
-        res.status(400).json({"errorMessage":"로그인이 필요합니다."})
+        res.status(400).json({ "errorMessage": "로그인이 필요합니다." })
     }
 
 }
