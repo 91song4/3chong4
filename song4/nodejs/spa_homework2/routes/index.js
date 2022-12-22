@@ -1,5 +1,8 @@
 const crypto = require("crypto");
+const { Op } = require("sequelize");
+
 const { User } = require("../models");
+
 
 async function setPasswordToHash(req, res, next) {
     const { nickname, password } = req.body;
@@ -21,14 +24,14 @@ async function setPasswordToHash(req, res, next) {
     next();
 }
 
-function auth_middleware(req, res,next)  {
-    const { authorization } = req.headers;
-    const [authType, authToken] = authorization.split(" ");
-    console.log([authType, authToken]);
-    console.log(req.cookies);
+async function auth_middleware(req, res,next)  {
+    console.log(req.params);
+    const token = req.cookies.jwt;
+    const userObject = await User.find
+    console.log(token);
     next();
 }
 
 
 
-module.exports = { setPasswordToHash };
+module.exports = { setPasswordToHash, auth_middleware };
