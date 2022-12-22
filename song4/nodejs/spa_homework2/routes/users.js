@@ -8,7 +8,7 @@ const { User } = require("../models");
 const router = express.Router();
 
 // 회원가입
-router.post('/users', async (req, res) => {
+router.post("/", async (req, res) => {
     const { nickname, email, password, confirmPassword } = req.body;
 
     // 조건 검사
@@ -22,6 +22,7 @@ router.post('/users', async (req, res) => {
             "errorMessage": "닉네임은 알파벳과 숫자로 적어주세요."
         })
     }
+
     regExp = new RegExp(`^((?!${nickname}).){4,}$`, "g");
     if ((regExp.test(password) === false)) {
         if (password.length < 4)
@@ -44,11 +45,21 @@ router.post('/users', async (req, res) => {
             "errorMessage": "중복된 닉네임 입니다."
         })
     }
-    const salt = crypto.randomBytes(128).toString('base64');
-    const hash = crypto.createHash('sha512').update(password + salt).digest('hex');
+    const salt = crypto.randomBytes(128).toString("base64");
+    const hash = crypto.createHash("sha512").update(password + salt).digest("hex");
     await User.create({ email, nickname, password: hash, salt });
 
     res.status(201).send();
 })
+
+router.get("/me", (req, res) => {
+    const {authorization} = req.headers;
+    const [authType, authToken] = authorization.split(" ");
+    console.log([authType, authToken]);
+    console.log(req.cookies);
+
+
+})
+
 
 module.exports = router;
