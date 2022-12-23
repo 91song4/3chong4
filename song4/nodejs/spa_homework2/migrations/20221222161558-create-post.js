@@ -29,6 +29,10 @@ module.exports = {
         onUpdate: 'cascade',
         type: Sequelize.INTEGER
       },
+      likes: {
+        defaultValue: 0,
+        type: Sequelize.INTEGER
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
