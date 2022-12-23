@@ -12,7 +12,7 @@ router.get('/likes/post', authMiddleWare, async (req, res) => {
     const data = await like.findALL({
         where: { user_id: user_id },
         raw: true,
-        getlist: [
+        attributes: [
             'user_id',
             'post_id',
             'post.title',

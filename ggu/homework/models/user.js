@@ -11,9 +11,16 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      models.user.hasMany(model.comment, { foreignKey: 'user_id' });
+      models.user.hasMany(model.post, { foreignKey: 'user_id' });
+      models.user.hasMany(model.like, { foreignKey: 'user_id' });
     }
   }
   User.init({
+    userId: {
+      type: DataTypes.INTEGER,
+      primaryKey: true
+    },
     nickname: DataTypes.STRING,
     password: DataTypes.STRING
   }, {
