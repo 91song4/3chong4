@@ -1,6 +1,7 @@
 const express = require('express');
-const { UPSERT } = require('sequelize/types/query-types');
 const router = express.Router();
+const { Op } = require('sequelize');
+const { user } = require('../models')
 
 router.post('/users', async (req, res) => {
     const { nickname, password, confirm } = req.body;
