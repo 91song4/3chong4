@@ -1,4 +1,5 @@
 const express = require("express");
+const Sequelize = require("sequelize");
 
 const { Post } = require("../models");
 const { User } = require("../models");
@@ -6,7 +7,7 @@ const { auth_middleware } = require("./index.js");
 
 const router = express.Router();
 
-router.post('/', auth_middleware, async (req, res) => {
+router.post("/", auth_middleware, async (req, res) => {
     try {
         const { title, content } = req.body;
 
@@ -38,32 +39,41 @@ router.post('/', auth_middleware, async (req, res) => {
     }
 });
 
-router.get('/', async (req, res) => {
+router.get("/", async (req, res) => {
     try {
-        // console.log(await User.findAll({ include: Post }));
-
-        const [posts] = await Post.findAll({
+        const posts = await Post.findAll({
             raw: true,
             include: [
                 {
                     model: User,
-                    attributes: ['nickname']
+                    attributes: []
                 }
             ],
-            attributes: ["postId", "title", "createdAt", "updatedAt", "likes"],
+            attributes: [
+                "postId",
+                "userId",
+                "User.nickname",
+                // [Sequelize.literal("User.nickname"), "nickname"],
+                "title",
+                "createdAt",
+                "updatedAt",
+                "likes",
+            ],
+            order: [
+                ["createdAt","desc"],
+            ],
         });
-if (posts.length < 1) {
-    throw new Error();
-}
-console.log(posts);
 
-res.json({ "data": "데이터들!" });
+        if (posts.length < 1) {
+            throw new Error();
+        }
+
+        res.json({ "data": posts });
 
     } catch (err) {
-    console.log(err);
-    res.status(400).json({ errorMessage: "게시글 조회에 실패하였습니다." });
-}
+        console.log(err);
+        res.status(400).json({ errorMessage: "게시글 조회에 실패하였습니다." });
+    }
 });
-
 
 module.exports = router;

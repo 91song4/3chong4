@@ -15,7 +15,7 @@ app.use("/api/login", authRouter);
 app.use("/api/posts", postRouter);
 
 app.use("/", (req, res) => {
-    res.send('Hello test');
+    res.send("Hello test");
 })
 
 
