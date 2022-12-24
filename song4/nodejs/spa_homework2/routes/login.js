@@ -22,7 +22,7 @@ router.post("/", setPasswordToHash, (req, res) => {
     const token = jwt.sign(
         { userId: user.userId },
         "SecretKey",
-        { expiresIn: "1m" }
+        { expiresIn: "10m" }
     )
 
     res.status(200).cookie('jwt', token).json({ token });

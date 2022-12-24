@@ -1,11 +1,83 @@
 const express = require("express");
-const Sequelize = require("sequelize");
+const { Op } = require("sequelize");
 
 const { Post } = require("../models");
 const { User } = require("../models");
 const { auth_middleware } = require("./index.js");
 
 const router = express.Router();
+
+router.get("/", async (req, res) => {
+    try {
+        const posts = await Post.findAll({
+            raw: true,
+            include: [
+                {
+                    model: User,
+                    attributes: []
+                }
+            ],
+            attributes: [
+                "postId",
+                "userId",
+                "User.nickname",
+                // [Sequelize.literal("User.nickname"), "nickname"],
+                "title",
+                "createdAt",
+                "updatedAt",
+                "likes",
+            ],
+            order: [
+                ["createdAt", "desc"],
+            ],
+        });
+
+        if (posts.length < 1) {
+            throw new Error();
+        }
+
+        res.json({ "data": posts });
+
+    } catch (err) {
+        console.log(err);
+        res.status(400).json({ errorMessage: "게시글 조회에 실패하였습니다." });
+    }
+});
+
+router.get('/:postId', async (req, res) => {
+    try {
+        const postId = parseInt(req.params.postId);
+        const post = await Post.findOne({
+            raw: true,
+            where: { postId },
+            include: [
+                {
+                    model: User,
+                    attributes: []
+                }
+            ],
+            attributes: [
+                "postId",
+                "userId",
+                "User.nickname",
+                "title",
+                "content",
+                "createdAt",
+                "updatedAt",
+                "likes",
+            ],
+        });
+
+        if (!post) {
+            throw new Error();
+        }
+
+        res.json({ "data": post });
+    } catch (err) {
+        console.log(err);
+        res.status(400).json({ errorMessage: "게시글 조회에 실패하였습니다." });
+    }
+})
 
 router.post("/", auth_middleware, async (req, res) => {
     try {
@@ -39,41 +111,30 @@ router.post("/", auth_middleware, async (req, res) => {
     }
 });
 
-router.get("/", async (req, res) => {
+router.put('/:postId', auth_middleware, async (req, res) => {
+    console.log('댓글 수정API');
     try {
-        const posts = await Post.findAll({
-            raw: true,
-            include: [
-                {
-                    model: User,
-                    attributes: []
-                }
-            ],
-            attributes: [
-                "postId",
-                "userId",
-                "User.nickname",
-                // [Sequelize.literal("User.nickname"), "nickname"],
-                "title",
-                "createdAt",
-                "updatedAt",
-                "likes",
-            ],
-            order: [
-                ["createdAt","desc"],
-            ],
-        });
-
-        if (posts.length < 1) {
-            throw new Error();
+        const postId = parseInt(req.params.postId);
+        const { title, content } = req.body;
+        if (!title) {
+            return res.status(412).json({ errorMessage: "게시글 제목의 형식이 일치하지 않습니다." })
         }
+        if (!content) {
+            return res.status(412).json({ errorMessage: "게시글 내용의 형식이 일치하지 않습니다." })
+        }
+        const user = res.locals.user;
 
-        res.json({ "data": posts });
-
-    } catch (err) {
-        console.log(err);
-        res.status(400).json({ errorMessage: "게시글 조회에 실패하였습니다." });
+        await Post.update({ title, content },
+            {
+                [Op.and]: [
+                    { postId },
+                    { userId: user.userId }
+                ]
+            });
+        return res.status(200).json({ message: "게시글을 수정하였습니다." });
+    } catch {
+        return res.status(401).json({ errorMessage: "게시글 수정에 실패하였습니다." });
     }
-});
+})
 
 module.exports = router;

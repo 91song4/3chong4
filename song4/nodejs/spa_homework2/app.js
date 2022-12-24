@@ -6,7 +6,6 @@ const authRouter = require("./routes/login.js");
 const postRouter = require("./routes/posts.js");
 
 const app = express();
-
 app.use("/api", express.json());
 app.use("/api", cookieParser());
 

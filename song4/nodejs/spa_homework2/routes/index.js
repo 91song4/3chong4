@@ -34,6 +34,7 @@ function validateToken(token) {
 }
 
 async function auth_middleware(req, res, next) {
+    console.log("토큰 검증API");
     const token = req.cookies.jwt;
 
     try {
@@ -42,7 +43,6 @@ async function auth_middleware(req, res, next) {
             const { userId } = isAvailableToken;
             User.findByPk(userId)
                 .then((user) => {
-                    console.log(userId);
                     res.locals.user = user.dataValues;
                     next();
                 });
