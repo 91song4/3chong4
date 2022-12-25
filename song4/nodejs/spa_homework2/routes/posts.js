@@ -3,21 +3,17 @@ const { Op } = require("sequelize");
 
 const { Post } = require("../models");
 const { User } = require("../models");
+const { Like } = require("../models");
 const { auth_middleware } = require("./index.js");
+const { getPostId } = require("./index.js");
 
 const commentRouter = require("./comments.js");
+const likeRouter = require("./likes.js");
 
 const router = express.Router();
 
-router.use("*/comments", (req, res, next) => {
-    console.log("commets set postId API");
-    const temp = req.baseUrl.split("/");
-    const tempLen = temp.length;
-    const postId = Number(temp[temp.length - 2]);
-
-    res.locals.postId = postId;
-    next();
-}, commentRouter);
+router.use("*/comments", getPostId, commentRouter);
+router.use("*/likes", getPostId, likeRouter);
 
 router.get("/", async (req, res) => {
     try {
@@ -83,6 +79,7 @@ router.get('/:postId', async (req, res) => {
         if (!post) {
             throw new Error();
         }
+        post.likes = 13;
 
         return res.json({ "data": post });
     } catch (err) {

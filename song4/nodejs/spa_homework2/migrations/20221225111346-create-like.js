@@ -2,37 +2,29 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Comments', {
-      commentId: {
+    await queryInterface.createTable('Likes', {
+      likeId: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      comment: {
+      postId: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Posts",
+          key:"postId"
+        },
+        onDelete: "cascade",
+        onUpdate: "cascade",
       },
       userId: {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: {
-          model: {
-            tableName: 'Users',
-          },
+          model: "Users",
           key: "userId"
-        },
-        onDelete: "cascade",
-        onUpdate: "cascade",
-      },
-      postId: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-        references: {
-          model: {
-            tableName: "Posts",
-          },
-          key: "postId",
         },
         onDelete: "cascade",
         onUpdate: "cascade",
@@ -48,6 +40,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Comments');
+    await queryInterface.dropTable('Likes');
   }
 };

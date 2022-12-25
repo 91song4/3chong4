@@ -72,7 +72,7 @@ router.put('/:commentId', async (req, res) => {
             if (updateCnt < 1) {
                 return res.status(404).json({ errorMessage: "댓글이 존재하지 않습니다." });
             }
-    
+
             return res.status(200).json({ message: "댓글을 수정하였습니다." });
         } catch (err) {
             console.error(err, "Error:");
@@ -82,6 +82,26 @@ router.put('/:commentId', async (req, res) => {
     } catch (err) {
         console.error(err, "Error:");
         return res.status(400).json({ errorMessage: "댓글 수정에 실패하였습니다." });
+    }
+})
+
+router.delete('/:commentId', async (req, res) => {
+    console.log("댓글 삭제 API");
+    try {
+        const commentId = Number(req.params.commentId);
+        try {
+            const destroyCnt = await Comment.destroy({ where: { commentId } });
+            if (destroyCnt < 1) {
+                return res.status(404).json({ errorMessage: "댓글이 존재하지 않습니다." });
+            }
+            return res.status(200).json({ message: "댓글을 삭제하였습니다." });
+        } catch(err) {
+            console.error(err, "Error");
+            return res.status(400).json({ errorMessage: "댓글 삭제가 정상적으로 처리되지 않았습니다." });
+        }
+    } catch (err) {
+        console.error(err, "Error:");
+        return res.status(400).json({ errorMessage: "댓글 삭제에 실패하였습니다." });
     }
 })
 

@@ -55,4 +55,14 @@ async function auth_middleware(req, res, next) {
     }
 }
 
-module.exports = { setPasswordToHash, auth_middleware, validateToken };
+function getPostId(req, res, next) {
+    console.log("commets set postId API");
+    const temp = req.baseUrl.split("/");
+    const tempLen = temp.length;
+    const postId = Number(temp[temp.length - 2]);
+
+    res.locals.postId = postId;
+    next();
+}
+
+module.exports = { setPasswordToHash, auth_middleware, validateToken, getPostId };
