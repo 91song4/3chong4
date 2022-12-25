@@ -11,16 +11,16 @@ db = pymysql.connect(host='localhost',
 # cursor = db.cursor()
 cursor = db.cursor(pymysql.cursors.DictCursor)
 
-# c
+
 cursor.execute('use sparta_test')
 
-# r
+
 # cursor.execute('insert into student(name, email) values ("어피치","카카오")')
 
-# u
+
 # cursor.execute('update student set name="라이언" where name="어피치"')
 
-# d
+
 # cursor.execute('delete from student where name="라이언"')
 
 cursor.execute('select * from student')
