@@ -4,7 +4,7 @@ function solution(keyinput, board) {
     const Y = 1;
     const MAX_X = parseInt(board[X] / 2);
     const MAX_Y = parseInt(board[Y] / 2);
-    num = 123;
+
     for (const move of keyinput) {
         switch (move) {
             case "left":

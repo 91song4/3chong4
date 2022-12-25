@@ -2,8 +2,8 @@ const express = require('express');
 const router = express.Router();
 const Post = require('../schemas/post.js');
 const mongoose = require('mongoose');
-const { ObjectId } = mongoose.Types;
-const dbUtcToKst = require('./index.js');
+const {dbUtcToKst} = require('./index.js');
+const {setObjectId} = require('./index.js');
 
 
 // 게시글 작성
@@ -38,19 +38,20 @@ router.get('/', async (req, res) =>
     ]);
     dbUtcToKst(posts);    // UTC to KST
 
-    
+
     res.status(200).json({ data: posts });
 })
 
 
 // 게시글 상세 조회
-router.get('/:_postId', async (req, res) =>
+router.get('/:_postId', setObjectId, async (req, res) =>
 {
+    console.log('게시글 상세 조회', req.params._postId);
     const postId = req.params._postId;
     try
     {
         const post = await Post.aggregate([
-            { $match: { _id: new ObjectId(postId) } },
+            { $match: { _id: postId } },
             {
                 $project: {
                     _id: 0,
@@ -72,8 +73,9 @@ router.get('/:_postId', async (req, res) =>
 
 
 // 게시글 수정
-router.put('/:_postId', async (req, res) =>
+router.put('/:_postId', setObjectId, async (req, res) =>
 {
+    console.log('게시글 수정', req.params._postId);
     const postId = req.params._postId;
     const { password, title, content } = req.body;
     if (password && title && content)
@@ -105,7 +107,7 @@ router.put('/:_postId', async (req, res) =>
 
 
 // 게시글 삭제
-router.delete('/:_postId', async (req, res) =>
+router.delete('/:_postId', setObjectId, async (req, res) =>
 {
     const postId = req.params._postId;
     const { password } = req.body;

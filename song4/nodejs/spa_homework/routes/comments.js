@@ -2,13 +2,13 @@ const express = require('express');
 const router = express.Router();
 const Comment = require('../schemas/comment.js');
 const Post = require('../schemas/post.js');
+const {dbUtcToKst} = require('./index.js');
 const mongoose = require('mongoose');
-const { ObjectId } = mongoose.Types;
-const dbUtcToKst = require('./index.js');
+
 
 
 // 댓글 생성
-router.post('/:_postId', async (req, res) => {
+router.post('/:_postId', setObjectId, async (req, res) => {
     const postId = req.params._postId;
     const { user, password, content } = req.body;
 
@@ -29,11 +29,12 @@ router.post('/:_postId', async (req, res) => {
 
 
 // 댓글 목록 조회
-router.get('/:_postId', async (req, res) => {
+router.get('/:_postId', setObjectId, async (req, res) => {
+    console.log('댓글 목록 조회', req.params._postId);
     const postId = req.params._postId;
     try {
         const comment = await Comment.aggregate([
-            { $match: { postId: new ObjectId(postId) } },
+            { $match: { postId: postId } },
             {
                 $project: {
                     _id: 0,
@@ -55,7 +56,9 @@ router.get('/:_postId', async (req, res) => {
 
 
 // 댓글 수정
-router.put('/:_commentId', async (req, res) => {
+router.put('/:_postId/:_commentId', setObjectId, async (req, res) => {
+    console.log('댓글 목록 조회', req.params._postId);
+    console.log('댓글 목록 조회', req.params._commentId);
     const commentId = req.params._commentId;
     const { password, content } = req.body;
     test = "";
@@ -84,7 +87,7 @@ router.put('/:_commentId', async (req, res) => {
 
 
 // 댓글 삭제
-router.delete('/:_commentId', async (req, res) => {
+router.delete('/:_commentId', setObjectId, async (req, res) => {
     const commentId = req.params._commentId;
     const { password } = req.body;
     if (password) {

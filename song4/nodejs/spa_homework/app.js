@@ -1,21 +1,38 @@
 const express = require('express');
-const connect = require('./schemas');
-const postRouter = require('./routes/posts.js');
-const commentRouter = require('./routes/comments.js');
 const mongoose = require('mongoose');
+
+const postRouter = require('./routes/posts.js');
+const commentRouter = require('./routes/comments');
+
+const { setObjectId } = require('./routes/index');
+
+const connect = require('./schemas');
+
 const app = express();
 const port = 3000;
+
 connect();
-
 app.use(express.json());
-app.get('/*', (req, res, next) =>
-{
-    console.log('app.js : app.get() test here');
-    mongoose.Types.ObjectId;
-    next();
-});
 
-// req를 인터셉트해서 다시 다음 동작이 하도록 보내주기.
+
+// postRouter.param('_postId', (req, res, next, id) =>
+// {
+//     console.log('test here');
+//     setObjectId('_postId', req, id);
+//     next();
+// })
+
+// commentRouter.param('_postId', (req, res, next, id) =>
+// {
+//     setObjectId('_postId', req, id);
+//     next();
+// })
+
+// commentRouter.param('_commentId', (req, res, next, id) =>
+// {
+//     setObjectId('_commentId', req, id);
+//     next();
+// })
 
 app.use('/posts', postRouter);
 app.use('/comments', commentRouter);
