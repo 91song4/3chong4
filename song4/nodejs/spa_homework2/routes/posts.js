@@ -9,7 +9,15 @@ const commentRouter = require("./comments.js");
 
 const router = express.Router();
 
-router.use("/:postId/comments", commentRouter);
+router.use("*/comments", (req, res, next) => {
+    console.log("commets set postId API");
+    const temp = req.baseUrl.split("/");
+    const tempLen = temp.length;
+    const postId = Number(temp[temp.length - 2]);
+
+    res.locals.postId = postId;
+    next();
+}, commentRouter);
 
 router.get("/", async (req, res) => {
     try {
@@ -40,11 +48,11 @@ router.get("/", async (req, res) => {
             throw new Error();
         }
 
-        res.json({ "data": posts });
+        return res.json({ "data": posts });
 
     } catch (err) {
         console.log(err);
-        res.status(400).json({ errorMessage: "게시글 조회에 실패하였습니다." });
+        return res.status(400).json({ errorMessage: "게시글 조회에 실패하였습니다." });
     }
 });
 
@@ -76,10 +84,10 @@ router.get('/:postId', async (req, res) => {
             throw new Error();
         }
 
-        res.json({ "data": post });
+        return res.json({ "data": post });
     } catch (err) {
         console.log(err);
-        res.status(400).json({ errorMessage: "게시글 조회에 실패하였습니다." });
+        return res.status(400).json({ errorMessage: "게시글 조회에 실패하였습니다." });
     }
 })
 
@@ -116,7 +124,7 @@ router.post("/", auth_middleware, async (req, res) => {
 });
 
 router.put('/:postId', auth_middleware, async (req, res) => {
-    console.log('댓글 수정API');
+    console.log('게시글 수정 API');
     try {
         const postId = parseInt(req.params.postId);
         const { title, content } = req.body;
@@ -162,10 +170,10 @@ router.delete('/:postId', auth_middleware, async (req, res) => {
             return res.status(404).json({ errorMessage: "게시글이 존재하지 않습니다." });
         }
 
-        res.status(200).json({ message: "게시글을 삭제하였습니다." })
+        return res.status(200).json({ message: "게시글을 삭제하였습니다." })
     } catch (err) {
         console.error(err, "Error:");
-        res.status(401).json({ errorMessage: "게시글이 정상적으로 삭제되지 않았습니다." });
+        return res.status(401).json({ errorMessage: "게시글이 정상적으로 삭제되지 않았습니다." });
     }
 })
 
