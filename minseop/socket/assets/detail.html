@@ -23,16 +23,8 @@
       rel="stylesheet"
     />
     <link href="/mystyle.css" rel="stylesheet" />
-    <title>스파르타 쇼핑몰 | 상품 목록</title>
-    <style>
-      .card {
-        cursor: pointer;
-      }
 
-      html {
-        overflow: auto;
-      }
-    </style>
+    <title>스파르타 쇼핑몰 | 상품 상세</title>
   </head>
 
   <body>
@@ -63,6 +55,7 @@
       <div
         class="navbar-collapse collapse flex-grow-0 ml-auto"
         id="navbarSupportedContent"
+        style=""
       >
         <ul class="navbar-nav mr-auto text-right">
           <li class="nav-item" id="link-cart">
@@ -98,9 +91,7 @@
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
-                  <div class="modal-body">
-                    정말로 로그아웃 하시겠습니까?
-                  </div>
+                  <div class="modal-body">정말로 로그아웃 하시겠습니까?</div>
                   <div class="modal-footer">
                     <button
                       type="button"
@@ -125,45 +116,111 @@
       </div>
     </nav>
     <div class="wrap">
-      <div>
-        <div class="form-group row mr-0">
-          <label for="categorySelect" class="col-4 col-form-label"
-            >카테고리</label
-          >
-          <select class="form-control col-8" id="categorySelect">
-            <option value="" selected>전체</option>
-            <option value="drink">음료</option>
-            <option value="food">음식</option>
-          </select>
+      <div class="row no-gutters">
+        <div class="col-sm-5">
+          <img
+            src="https://cdn.pixabay.com/photo/2016/09/07/19/54/wines-1652455_1280.jpg"
+            class="card-img-top h-100"
+            alt="..."
+            id="goodsUrl"
+          />
         </div>
-      </div>
-      <div id="goodsList" class="mb-5">
-        <div>
-          <div class="card mb-2" onclick="location.href='#'">
-            <div class="row no-gutters">
-              <div class="col-sm-5" style="background: #868e96">
-                <img
-                  src="https://cdn.pixabay.com/photo/2016/09/07/19/54/wines-1652455_1280.jpg"
-                  class="card-img-top h-100"
-                  alt="..."
-                />
+        <div class="col-sm-7 card-body px-3">
+          <div class="flex-fill mt-3">
+            <div class="d-flex justify-content-between mb-3">
+              <h5 style="display: inline" id="goodsName">상품 1</h5>
+              <span class="card-price" id="goodsPrice">$6.20</span>
+            </div>
+
+            <div class="form-group row mr-0">
+              <label for="numberSelect" class="col-4 col-form-label"
+                >수량</label
+              >
+              <select class="custom-select col-8" id="numberSelect">
+                <option selected value="1">1개</option>
+                <option value="2">2개</option>
+                <option value="3">3개</option>
+                <option value="4">4개</option>
+                <option value="5">5개</option>
+              </select>
+            </div>
+            <hr />
+            <div class="row mb-3">
+              <div class="col-5">총 상품금액</div>
+              <div class="col-7 text-right" id="orderNumber">
+                <small class="mr-2 text-muted">총 수량 1개</small>$6.20
               </div>
-              <div class="col-sm-7 d-flex">
-                <div class="card-body flex-fill">
-                  <div class="card-title mb-auto">
-                    <h5 style="display: inline">상품 1</h5>
-                    <span class="card-price ml-2">$6.20</span>
-                  </div>
-                  <span class="badge badge-secondary">drink</span>
-                  <!--                                <p class="card-text"><small class="text-muted">drink</small></p>-->
-                </div>
+            </div>
+            <div class="row mb-3">
+              <small class="col-12 text-right" id="pageViewerCount"></small>
+            </div>
+            <div class="row d-flex justify-content-around">
+              <div class="col-6 pr-2">
+                <button
+                  type="button"
+                  class="btn btn-outline-sparta btn-block"
+                  onclick="addToCart(goodsId, $('#numberSelect').val(), function() { $('#cartModal').modal('show'); })"
+                >
+                  장바구니
+                </button>
+              </div>
+              <div class="col-6 pl-2">
+                <button
+                  type="button"
+                  class="btn btn-sparta btn-block"
+                  onclick="buyNow()"
+                >
+                  바로 구매
+                </button>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-
+    <div
+      class="modal text-left"
+      id="cartModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="cartModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="cartModalLabel">알림</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            장바구니에 담았습니다! 장바구니로 갈까요?
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-outline-sparta"
+              data-dismiss="modal"
+            >
+              취소
+            </button>
+            <button
+              type="button"
+              class="btn btn-sparta"
+              onclick='window.location.href="/cart.html"'
+            >
+              장바구니
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script
@@ -183,60 +240,58 @@
     ></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
     <script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
-
     <script src="/api.js"></script>
     <script>
+      const queryString = window.location.search;
+      const urlParams = new URLSearchParams(queryString);
+      const goodsId = urlParams.get("goodsId");
+      let goods;
       let user;
       getSelf(function (u) {
         user = u;
       });
+
       $(document).ready(function () {
-        getGoods(null, function (goods) {
-          for (let i = 0; i < goods.length; i++) {
-            make_card(goods[i]);
+        initAuthenticatePage();
+        bindSamePageViewerCountEvent(function (count) {
+          // NOTE: 나 포함인 값이라 항상 1명 초과일때만 메세지를 보여준다.
+          if (count > 1) {
+            $("#pageViewerCount").html(
+              `총 <b>${count}</b>명이 이 상품을 구경하고 있습니다!`
+            );
+          } else {
+            $("#pageViewerCount").html("");
           }
         });
+        getGoodsDetail(goodsId, function (g) {
+          goods = g;
+          renderItem(Number($("#numberSelect").val()));
+        });
 
-        $("#categorySelect").on("change", function () {
-          getGoods($(this).val(), function (goods) {
-            for (let i = 0; i < goods.length; i++) {
-              make_card(goods[i]);
-            }
-          });
+        $("#numberSelect").on("change", function () {
+          renderItem(Number($(this).val()));
         });
       });
 
-      function make_card(item) {
-        let htmlTemp = `<div>
-    <div class="card mb-2" onclick="location.href='/detail.html?goodsId=${
-      item["goodsId"]
-    }'">
-        <div class="row no-gutters">
-            <div class="col-sm-5" style="background: #868e96;">
-                <img src="${item["thumbnailUrl"]}"
-                      class="card-img-top h-100" alt="...">
-            </div>
-            <div class="col-sm-7 d-flex">
-                <div class="card-body flex-fill">
-                    <div class="card-title mb-auto">
-                        <h5 style="display: inline">${item["name"]}</h5>
-                        <span class="card-price ml-2">$${number2decimals(
-                          item["price"]
-                        )}</span>
-                    </div>
-                    <span class="badge badge-secondary">${
-                      item["category"]
-                    }</span>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>`;
-        $("#goodsList").append(htmlTemp);
+      function renderItem(orderNum) {
+        $("#orderNumber").html(
+          `<small class="mr-2 text-muted">총 수량 ${orderNum}개</small> $${(
+            orderNum * Number(goods.price)
+          ).toFixed(2)}`
+        );
+
+        $("#goodsUrl").attr("src", goods.thumbnailUrl);
+        $("#goodsName").text(goods.name);
+        $("#goodsPrice").text("$" + goods.price);
       }
 
-      function number2decimals(num) {
-        return (Math.round(num * 100) / 100).toFixed(2);
+      function buyNow() {
+        buyLocation([
+          {
+            goods,
+            quantity: Number($("#numberSelect").val()),
+          },
+        ]);
       }
     </script>
   </body>

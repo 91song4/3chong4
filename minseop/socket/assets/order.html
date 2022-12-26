@@ -23,14 +23,11 @@
       rel="stylesheet"
     />
     <link href="/mystyle.css" rel="stylesheet" />
-    <title>스파르타 쇼핑몰 | 상품 목록</title>
+    <title>스파르타 쇼핑몰 | 주문</title>
+
     <style>
       .card {
         cursor: pointer;
-      }
-
-      html {
-        overflow: auto;
       }
     </style>
   </head>
@@ -98,9 +95,7 @@
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
-                  <div class="modal-body">
-                    정말로 로그아웃 하시겠습니까?
-                  </div>
+                  <div class="modal-body">정말로 로그아웃 하시겠습니까?</div>
                   <div class="modal-footer">
                     <button
                       type="button"
@@ -125,38 +120,87 @@
       </div>
     </nav>
     <div class="wrap">
-      <div>
-        <div class="form-group row mr-0">
-          <label for="categorySelect" class="col-4 col-form-label"
-            >카테고리</label
-          >
-          <select class="form-control col-8" id="categorySelect">
-            <option value="" selected>전체</option>
-            <option value="drink">음료</option>
-            <option value="food">음식</option>
-          </select>
-        </div>
+      <div class="mb-3">
+        <h4><i class="fa fa-truck mr-1" aria-hidden="true"></i>배송지 입력</h4>
       </div>
-      <div id="goodsList" class="mb-5">
-        <div>
-          <div class="card mb-2" onclick="location.href='#'">
-            <div class="row no-gutters">
-              <div class="col-sm-5" style="background: #868e96">
-                <img
-                  src="https://cdn.pixabay.com/photo/2016/09/07/19/54/wines-1652455_1280.jpg"
-                  class="card-img-top h-100"
-                  alt="..."
-                />
+      <div>
+        <div class="form-group">
+          <label for="exampleInputName">받는 사람</label>
+          <input
+            type="text"
+            class="form-control"
+            id="exampleInputName"
+            placeholder="홍길동"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="exampleInputMobile">연락처</label>
+          <input
+            type="text"
+            class="form-control"
+            id="exampleInputMobile"
+            placeholder="010-xxx-xxxx"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="exampleInputAddress1">주소</label>
+          <input
+            type="text"
+            class="form-control"
+            id="exampleInputAddress1"
+            placeholder="도로명, 건물명, 번지 검색"
+          />
+          <input
+            type="text"
+            class="form-control mt-2"
+            id="exampleInputAddress2"
+            placeholder="상세주소"
+          />
+        </div>
+
+        <button
+          type="button"
+          class="btn btn-sparta btn-block"
+          data-toggle="modal"
+          data-target="#orderModal"
+          id="btnOrder"
+        >
+          $0.20 결제
+        </button>
+        <div
+          class="modal text-left"
+          id="orderModal"
+          tabindex="-1"
+          role="dialog"
+          aria-labelledby="orderModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="orderModalLabel">결제완료</h5>
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
               </div>
-              <div class="col-sm-7 d-flex">
-                <div class="card-body flex-fill">
-                  <div class="card-title mb-auto">
-                    <h5 style="display: inline">상품 1</h5>
-                    <span class="card-price ml-2">$6.20</span>
-                  </div>
-                  <span class="badge badge-secondary">drink</span>
-                  <!--                                <p class="card-text"><small class="text-muted">drink</small></p>-->
-                </div>
+              <div class="modal-body">
+                <span id="nickname"></span>님, 주문해주셔서 감사합니다 :)
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-outline-sparta btn-confirm"
+                  data-dismiss="modal"
+                >
+                  확인
+                </button>
               </div>
             </div>
           </div>
@@ -181,59 +225,31 @@
       integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s"
       crossorigin="anonymous"
     ></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
     <script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
-
     <script src="/api.js"></script>
-    <script>
-      let user;
-      getSelf(function (u) {
-        user = u;
-      });
-      $(document).ready(function () {
-        getGoods(null, function (goods) {
-          for (let i = 0; i < goods.length; i++) {
-            make_card(goods[i]);
-          }
-        });
 
-        $("#categorySelect").on("change", function () {
-          getGoods($(this).val(), function (goods) {
-            for (let i = 0; i < goods.length; i++) {
-              make_card(goods[i]);
-            }
+    <script>
+      $(document).ready(function () {
+        getSelf(function (user) {
+          const order = JSON.parse(sessionStorage.getItem("ordered"));
+          $("#nickname").text(user.nickname);
+          $("#btnOrder")
+            .text(
+              `$${number2decimals(
+                order.reduce(
+                  (s, o) => s + Number(o.goods.price) * o.quantity,
+                  0
+                )
+              )} 결제`
+            )
+            .click(function () {
+              postOrder(user, order);
+            });
+          $(".btn-confirm").click(function () {
+            location.href = "/goods.html";
           });
         });
       });
-
-      function make_card(item) {
-        let htmlTemp = `<div>
-    <div class="card mb-2" onclick="location.href='/detail.html?goodsId=${
-      item["goodsId"]
-    }'">
-        <div class="row no-gutters">
-            <div class="col-sm-5" style="background: #868e96;">
-                <img src="${item["thumbnailUrl"]}"
-                      class="card-img-top h-100" alt="...">
-            </div>
-            <div class="col-sm-7 d-flex">
-                <div class="card-body flex-fill">
-                    <div class="card-title mb-auto">
-                        <h5 style="display: inline">${item["name"]}</h5>
-                        <span class="card-price ml-2">$${number2decimals(
-                          item["price"]
-                        )}</span>
-                    </div>
-                    <span class="badge badge-secondary">${
-                      item["category"]
-                    }</span>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>`;
-        $("#goodsList").append(htmlTemp);
-      }
 
       function number2decimals(num) {
         return (Math.round(num * 100) / 100).toFixed(2);
