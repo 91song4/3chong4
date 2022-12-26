@@ -22,8 +22,7 @@ router.get('/posts', async (req, res) => {
 
 // 게시글 작성
 router.post('/posts', authMiddleware, async (req, res) => {
-  const { userId } = res.locals.user;
-  console.log('@@@@@@@@@@@@@@@@@', userId);
+  const { userId } = req.decode.userId;
   const { title, content } = req.body;
 
   try {
@@ -90,6 +89,41 @@ router.put('/posts/:postId', async (req, res) => {
 });
 
 // 게시글 삭제
-router.delete()
+router.delete('/posts/:postId', authMiddleware, async (req, res) => {
 
+  try {
+    const { postId } = req.params;
+    const userId = req.decode.userId;
+    console.log("@@@@@@@@@@@@@@@@@@", userId);
+    console.log("###############", postId);
+
+    const post = await Post.findOne({
+      where: [ { postId }, { userId } ]
+    });
+
+    if ( !post ) {
+      return res.status(400).json({
+        msg: "게시글이 없어염"
+      });
+    }
+
+    if ( post.userId !== userId ) {
+      return res.status(400).json({
+        msg: "게시글 삭제 권한이 없어염"
+      });
+    }
+
+    await Post.destroy({
+      where: { postId }
+    });
+    res.status(200).json({
+      msg: "삭제 했어염"
+    });
+  } catch ( err ) {
+    console.log(err);
+    return res.status(400).json({
+      mes: "게시글 삭제 실패했어염"
+    });
+  }
+});
 module.exports = router;
