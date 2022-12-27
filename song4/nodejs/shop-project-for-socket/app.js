@@ -3,7 +3,10 @@ const { Op } = require("sequelize");
 const jwt = require("jsonwebtoken");
 const { User, Cart, Goods } = require("./models");
 const authMiddleware = require("./middlewares/auth-middleware");
+
+// const { createServer } = require("http");
 const { Server } = require("http");
+
 const socketIo = require("socket.io");
 
 const app = express();
@@ -182,6 +185,7 @@ router.get("/goods", authMiddleware, async (req, res) => {
 router.get("/goods/:goodsId", authMiddleware, async (req, res) => {
   const { goodsId } = req.params;
   const goods = await Goods.findByPk(goodsId);
+  
 
   if (!goods) {
     res.status(404).send({});
@@ -212,6 +216,10 @@ app.use("/api", express.urlencoded({ extended: false }), router);
 
 io.on('connection', (sock) => {
   console.log(sock.id, '님이 연결되었습니다!');
+
+  sock.on('CHANGED_PAGE', (data) => {
+    console.log('@@@@@@@@@@@@',data);
+  });
 
   sock.on('BUY', (data) => {
     const emitData = {
