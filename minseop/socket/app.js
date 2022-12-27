@@ -5,11 +5,11 @@ const { User, Cart, Goods } = require("./models");
 const authMiddleware = require("./middlewares/auth-middleware");
 
 const { Server } = require("http");
-const socketIo = require("socket.io");
+
 
 const app = express();
 const http = Server(app);
-const io = socketIo(http);
+
 const router = express.Router();
 
 app.use(express.static("assets"));
@@ -86,20 +86,13 @@ router.get("/goods/cart", authMiddleware, async (req, res) => {
     where: {
       goodsId: goodsIds,
     },
-  }).then((goods) =>
-    goods.reduce(
-      (prev, g) => ({
-        ...prev,
-        [g.goodsId]: g,
-      }),
-      {}
-    )
-  );
+  }).then((goods) => goods.reduce((prev, g) => ({
+    ...prev, [g.goodsId]: g,
+  }), {}));
 
   res.send({
     cart: cart.map((c) => ({
-      quantity: c.quantity,
-      goods: goodsKeyById[c.goodsId],
+      quantity: c.quantity, goods: goodsKeyById[c.goodsId],
     })),
   });
 });
@@ -115,8 +108,7 @@ router.put("/goods/:goodsId/cart", authMiddleware, async (req, res) => {
 
   const existsCart = await Cart.findOne({
     where: {
-      userId,
-      goodsId,
+      userId, goodsId,
     },
   });
 
@@ -125,9 +117,7 @@ router.put("/goods/:goodsId/cart", authMiddleware, async (req, res) => {
     await existsCart.save();
   } else {
     await Cart.create({
-      userId,
-      goodsId,
-      quantity,
+      userId, goodsId, quantity,
     });
   }
 
@@ -144,8 +134,7 @@ router.delete("/goods/:goodsId/cart", authMiddleware, async (req, res) => {
 
   const existsCart = await Cart.findOne({
     where: {
-      userId,
-      goodsId,
+      userId, goodsId,
     },
   });
 
@@ -169,8 +158,7 @@ router.delete("/goods/:goodsId/cart", authMiddleware, async (req, res) => {
 router.get("/goods", authMiddleware, async (req, res) => {
   const { category } = req.query;
   const goods = await Goods.findAll({
-    order: [ [ "goodsId", "DESC" ] ],
-    where: category ? { category } : undefined,
+    order: [ [ "goodsId", "DESC" ] ], where: category ? { category } : undefined,
   });
 
   res.send({ goods });
@@ -210,26 +198,4 @@ router.post("/goods", async (req, res) => {
 
 app.use("/api", express.urlencoded({ extended: false }), router);
 
-io.on("connection", (sock) => {
-  console.log("새로운 소켓이 연결됐어요!");
-
-  sock.on("BUY", (data) => {
-
-    console.log(data);
-    const emitData = {
-      nickname: data.nickname,//서버가 보내준 구매자 닉네임',
-      goodsId: data.goodsId, // 서버가 보내준 상품 데이터 고유 ID
-      goodsName: data.goodsName,//'서버가 보내준 구매자가 구매한 상품 이름',
-      date: new Date().toISOString()
-    };
-    io.emit('BUY_GOODS', emitData)
-  });
-
-  sock.on("disconnect", () => {
-    console.log(sock.id, "연결이 끊어졌어요!");
-  });
-});
-
-http.listen(8080, () => {
-  console.log("서버가 요청을 받을 준비가 됐어요");
-});
+module.exports = http;
