@@ -7,12 +7,10 @@ const authMiddleware = require("./middlewares/auth-middleware");
 // const { createServer } = require("http");
 const { Server } = require("http");
 
-const socketIo = require("socket.io");
+const { watch } = require('fs');
 
 const app = express();
 const httpServer = Server(app);
-const io = socketIo(httpServer);
-
 const router = express.Router();
 
 app.use(express.static("assets"));
@@ -185,7 +183,7 @@ router.get("/goods", authMiddleware, async (req, res) => {
 router.get("/goods/:goodsId", authMiddleware, async (req, res) => {
   const { goodsId } = req.params;
   const goods = await Goods.findByPk(goodsId);
-  
+
 
   if (!goods) {
     res.status(404).send({});
@@ -214,28 +212,7 @@ router.post("/goods", async (req, res) => {
 
 app.use("/api", express.urlencoded({ extended: false }), router);
 
-io.on('connection', (sock) => {
-  console.log(sock.id, '님이 연결되었습니다!');
 
-  sock.on('CHANGED_PAGE', (data) => {
-    console.log('@@@@@@@@@@@@',data);
-  });
 
-  sock.on('BUY', (data) => {
-    const emitData = {
-      ...data,
-      date: Date()
-      // date: new Date(new Date().getTime() + 32400000).toISOString()
-    }
 
-    io.emit("BUY_GOODS", emitData);
-  })
-
-  sock.on('disconnect', function () {
-    console.log(sock.id, "님의 연결이 끊어졌습니다!");
-  })
-})
-
-httpServer.listen(8080, () => {
-  console.log("서버가 요청을 받을 준비가 됐어요");
-});
+module.exports = httpServer;
