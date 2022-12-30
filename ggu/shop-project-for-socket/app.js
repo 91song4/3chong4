@@ -3,12 +3,10 @@ const { Op } = require("sequelize");
 const jwt = require("jsonwebtoken");
 const { User, Cart, Goods } = require("./models");
 const authMiddleware = require("./middlewares/auth-middleware");
-const {Server} = require("http");
-const socketIo = require("socket.io");
+const { Server } = require("http");
 
 const app = express();
 const http = Server(app);
-const io = socketIo(http);
 const router = express.Router();
 
 app.use(express.static("assets"));
@@ -209,25 +207,5 @@ router.post("/goods", async (req, res) => {
 
 app.use("/api", express.urlencoded({ extended: false }), router);
 
-io.on("connection", (sock) => {
-  console.log("새로운 소켓이 연결되었어요!");
 
-  sock.on("BUY", data => {
-    console.log(data);
-    const emitData = {
-      nickname:data.nickname,
-      goodsId:data.goodsId,
-      goodsName:data.goodsName,
-      date:new Date().toISOString(),
-    }
-    io.emit("BUY_GOODS", emitData);
-  })
-
-  sock.on("disconnect", () => {
-    console.log(sock.id, "해당하는 사용자가 연결이 끊어졌어요!");
-  })
-})
-
-http.listen(8080, () => {
-  console.log("서버가 요청을 받을 준비가 됐어요");
-});
+module.exports = http;
