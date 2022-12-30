@@ -51,7 +51,24 @@ describe('Layered Architecture Pattern Posts Service Unit Test', () => {
     });
 
     test('Posts Service deletePost Method By Success', async () => {
-        // TODO: 여기에 코드를 작성해야합니다.
+        const findPostByIdReturnValue = {
+            postId: 1,
+            nickname: "Nickname_1",
+            title: "Title_1",
+            content: "Content_1",
+            createdAt: new Date("11 october 2022 00:00"),
+            updatedAt: new Date("11 october 2022 00:00"),
+        }
+    mockPostsRepository.findPostById = jest.fn(() => {
+        return findPostByIdReturnValue;
+    })
+
+    const deletePost = await postService.deletePost(1, "0000");
+
+    expect(mockPostsRepository.findPostById).toHaveBeenCalledTimes(1);
+    expect(mockPostsRepository.findPostById).toHaveBeenCalledTimes(1);
+
+
     });
 
     test('Posts Service deletePost Method By Not Found Post Error', async () => {
