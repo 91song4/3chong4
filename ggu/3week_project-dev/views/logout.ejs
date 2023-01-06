@@ -1,0 +1,22 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script>
+
+$(document).ready(function () {
+    movelogin()
+    const token = $.cookie('token');
+    $.removeCookie("token", { path: "/" });
+    window.location.href = 'http://localhost:4000/';
+  })
+
+// function logout() {
+//     $.removeCookie('token', { path: '/' });
+//     location.href = 'http://localhost:4000/';
+// }
+function movelogin() {
+    if (confirm("로그아웃이 정상적으로 완료되었습니다.")){
+        window.location.href = "http://localhost:4000"
+    } else {
+        window.location.href = "http://localhost:4000"
+    }
+}
+</script>

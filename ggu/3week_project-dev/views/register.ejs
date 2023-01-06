@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>::: 회원가입 :::</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../static/css/reset.css" />
+    <link rel="stylesheet" href="../static/css/sign.css" />
+    <script src="./static/js/register.js"></script>
+  </head>
+  <body>
+    <div class="sign_wrap" id="sign_wrap" name="sign_wrap">
+      <div class="register_wrap">
+        <h2>JOIN</h2>
+        <!-- <ul class="user_type">
+          <li class="user_register" onclick="move_user_register()">사용자 회원가입</li>
+          <li class="shop_register" onclick="move_shop_register()">사업자 회원가입</li>
+        </ul> -->
+        <label for="">
+          <input type="text" name="nickname" id="nickname" placeholder="닉네임(매장명)" />
+          <span class="nickname_check">중복확인</span>
+        </label>
+        <label for="">
+          <input type="password" name="password" id="password" placeholder="비밀번호" />
+          <span class="password_check">비밀번호가 다릅니다.</span>
+        </label>
+        <label for="">
+          <input type="password" name="password2" id="password2" placeholder="비밀번호 확인" />
+          <span class="password_check">비밀번호가 다릅니다.</span>
+        </label>
+        <input type="text" name="phone_number" id="phone_number" placeholder="연락처" />
+        <input type="text" name="address" id="address" placeholder="주소" />
+        <ul class="user_type">
+          <li class="user_signup" onclick="user_register()">사용자로 회원가입</li>
+          <li class="shop_signup" onclick="shop_register()">사업자로 회원가입</li>
+        </ul>
+
+        <!-- <input
+          class="user_signup"
+          type="submit"
+          onclick="user_register()"
+          name="user_signup_submit"
+          value="회원가입하기"
+        />
+        <input
+          class="shop_signup"
+          type="submit"
+          onclick="shop_register()"
+          name="shop_signup_submit"
+          value="회원가입하기"
+        /> -->
+      </div>
+    </div>
+  </body>
+</html>
