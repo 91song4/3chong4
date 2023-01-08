@@ -7,11 +7,11 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       comment: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       userId: {
         allowNull: false,
@@ -20,34 +20,34 @@ module.exports = {
           model: {
             tableName: 'Users',
           },
-          key: "userId"
+          key: 'userId',
         },
-        onDelete: "cascade",
-        onUpdate: "cascade",
+        onDelete: 'cascade',
+        onUpdate: 'cascade',
       },
       postId: {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: {
           model: {
-            tableName: "Posts",
+            tableName: 'Posts',
           },
-          key: "postId",
+          key: 'postId',
         },
-        onDelete: "cascade",
-        onUpdate: "cascade",
+        onDelete: 'cascade',
+        onUpdate: 'cascade',
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('Comments');
-  }
+  },
 };
