@@ -15,19 +15,22 @@ app.use("/public", express.static(__dirname + "/src/public"));
 app.get('/', ( req, res ) => res.render("home"));
 app.get('/*', ( req, res ) => res.redirect('/'));
 
-const handleListen = () => console.log(`listening on http://localhost:3000`);
 
 const server = http.createServer(app);
 const wss = new WebSocketServer({ server });
 
+const sockets = [];
+
 
 wss.on("connection", ( socket ) => {
+	sockets.push(socket);
 	console.log("Connected to Browser ✅ ");
 	socket.on("close", () => console.log("DisConnected from the Browser ❌ "));
-	socket.on("message", (message)=> {
-		console.log(message.toString('utf8'));
-	})
-	socket.send("hello~~");
+	socket.on("message", ( message ) => {
+		sockets.forEach(aSocket => aSocket.send(message.toString()));
+	});
 });
 
+const handleListen = () => console.log(`listening on http://localhost:3000`);
 server.listen(3000, handleListen);
+
