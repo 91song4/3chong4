@@ -1,0 +1,19 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset='utf-8')
+        title Seop
+        link(rel="stylesheet" href="https://unpkg.com/mvp.css@1.12/mvp.css")
+    body
+        header
+            h1 Seop
+        main
+            form#nick
+                input(type='text', placeholder='닉네임' required)
+                button Save
+
+            ul
+            form#message
+                input(type='text', placeholder='메세지 입력해주세용' required)
+                button Send
+        script(src="/public/js/app.js")
