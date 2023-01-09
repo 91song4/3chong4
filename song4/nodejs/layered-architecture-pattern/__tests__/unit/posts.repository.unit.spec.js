@@ -19,12 +19,53 @@ describe('Layered Architecture Pattern Posts Repository Unit Test', () => {
   })
 
   test('Posts Repository findAllPost Method', async () => {
-    // TODO: 여기에 코드를 작성해야합니다.
+    mockPostsModel.findAll = jest.fn(() => {
+      return 'findAll Result';
+    })
+
+    const posts = await postRepository.findAllPost();
+
+    // postsModel에 있는 findAll Method는 1번만 실행된다.
+    expect(mockPostsModel.findAll).toHaveBeenCalledTimes(1);
+
+    // postsModel에 있는 findAll Method의 결과값이 바로 Return 되어야 한다.
+    expect(posts).toEqual('findAll Result');
   });
 
 
   test('Posts Repository createPost Method', async () => {
-    // TODO: 여기에 코드를 작성해야합니다.
+    mockPostsModel.create = jest.fn(() => {
+      return 1;
+    })
+
+    const createPostParams = {
+      nickname: 'createPostNickname',
+      password: 'createPostPassword',
+      title: 'createPostTitle',
+      content: 'createPostContent'
+    }
+
+    const createPostData = await postRepository.createPost(
+      createPostParams.nickname,
+      createPostParams.password,
+      createPostParams.title,
+      createPostParams.content,
+    );
+
+    // postsModel.create Method는 1번 호출된다.
+    expect(mockPostsModel.create).toHaveBeenCalledTimes(1);
+
+    // postsModel.create Method의 결과값은 createPostData (method의 실행한 결과값) 변수와 일치한다.
+    expect(createPostData).toEqual(1);
+
+    // postsModel.craete Method를 호출할때, {nickname, password, title, content};
+    expect(mockPostsModel.create).toHaveBeenCalledWith({
+      nickname: createPostParams.nickname,
+      password: createPostParams.password,
+      title: createPostParams.title,
+      content: createPostParams.content,
+    });
+
   });
 
 });

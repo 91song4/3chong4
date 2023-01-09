@@ -4,11 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "set NODE_ENV=test jest --forceExit",
-    "test:silent": "set NODE_ENV=test jest --silent --forceExit",
-    "test:coverage": "set NODE_ENV=test jest --coverage --forceExit",
-    "test:unit": "set NODE_ENV=test jest __tests__/unit --forceExit",
-    "test:integration": "set NODE_ENV=test jest __tests__/integration --forceExit"
+    "test": "NODE_ENV=test jest --forceExit",
+    "test:silent": "NODE_ENV=test jest --silent --forceExit",
+    "test:coverage": "NODE_ENV=test jest --coverage --forceExit",
+    "test:unit": "NODE_ENV=test jest __tests__/unit --forceExit",
+    "test:integration": "NODE_ENV=test jest __tests__/integration --forceExit"
   },
   "author": "",
   "license": "ISC",
