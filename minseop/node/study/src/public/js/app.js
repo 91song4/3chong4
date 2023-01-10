@@ -24,7 +24,6 @@ socket.addEventListener("close", () => {
 	console.log("DisConnected to Sever ❌ ");
 });
 
-
 // 유저가 서버로 메세지 보내기
 function handleSubmit( event ) {
 	event.preventDefault(); // 새로고침을 막아준다
@@ -37,7 +36,8 @@ function handleSubmit( event ) {
 function handleNickSubmit( event ) {
 	event.preventDefault();
 	const input = nickForm.querySelector("input");
-	socket.send(makeMessage("nickname",input.value))
+	socket.send(makeMessage("nickname", input.value));
+	input.value = "";
 }
 
 messageForm.addEventListener("submit", handleSubmit);
