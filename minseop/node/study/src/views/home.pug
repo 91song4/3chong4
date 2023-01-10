@@ -6,8 +6,18 @@ html(lang="en")
         link(rel="stylesheet" href="https://unpkg.com/mvp.css@1.12/mvp.css")
     body
         header
-            h1 Seop
+            h1 Sep
         main
+            div#welcome
+                form
+                    input(placeholder="Room Name", required, type=text)
+                    button Enter Room
+            div#room
+                h3
+                ul
+                form
+                    input(placeholder="message", required, type=text)
+                    button Send
 
         script(src="/socket.io/socket.io.js")
         script(src="/public/js/app.js")
