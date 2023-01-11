@@ -21,16 +21,22 @@ const httpServer = http.createServer(app);
 const wsServer = new Server(httpServer);
 
 wsServer.on("connection", ( socket ) => {
-	socket.onAny((event)=> {
+	socket.onAny(( event ) => {
 		console.log(`Socket Event: ${event}`);
 	});
 	socket.on("enter_room", ( roomName, done ) => {
-		socket.join(roomName)
-		done()
-		socket.to(roomName).emit("welcomeMsg")
-
+		socket.join(roomName);
+		done();
+		socket.to(roomName).emit("welcomeMsg");
 	});
-})
+	socket.on("disconnect", () => {
+		socket.rooms.forEach(room => socket.to(room).emit("bye"));
+	});
+	socket.on("new_message", ( msg, room, done ) => {
+		socket.to(room).emit("new_message", msg);
+		done();
+	});
+});
 
 //const wss = new WebSocketServer({ server });
 //
