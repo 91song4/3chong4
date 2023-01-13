@@ -1,0 +1,187 @@
+`< !DOCTYPE html >
+  <html lang="en">
+
+    <script src="/socket.io/socket.io.js"> </script>
+
+    <style>
+      #gameScreen{
+        display: none;
+}
+    </style>
+
+    <body>
+      <section>
+        <div>
+          <!-- 첫 화면 버튼 -->
+          <div id="initialScreen">
+            <h1> Muliplayer Game</h1>
+            <button type="sumbit" class="btn btn-sucess" id="newGameButton">
+              Create New Game
+            </button>
+            <div>OR</div>
+            <div class="form-group">
+              <input type="text" placeholder="Enter Game Code" id="gameCodeInput" />
+            </div>
+            <button type="submit" class="btn btn-sucess" id="joinGameButton">
+              Join Game
+            </button>
+          </div>
+          <!-- 게임 스크린 화면 -->
+          <div id="gameScreen">
+            <h1> Your game code is : <span id="gameCodeDisplay"></span></h1>
+            <h1> SCORE BLUE : <span id="gameScoreBlueDisplay"></span>
+              VS  SCORE RED : <span id="gameScoreRedDisplay"></span>
+            </h1>
+            <canvas id="canvas"></canvas>
+          </div>
+        </div>
+      </section>
+    </body>
+    <script>
+      const socket = io();
+
+      // Socket.io 의 이벤트 핸들러 선언 
+      socket.on('init' , handleInit);
+      socket.on('gameState' , handleGameState);
+      socket.on('gameOver' , handleGameOver);
+      socket.on('gameCode' , handleGameCode);
+      socket.on('unknownCode' , handleUnknownCode);
+      socket.on('tooManyPlayers', handleTooManyPlayers);
+
+      //Element ID 로 가저오기 
+      const gameScreen = document.getElementById('gameScreen');
+      const initialScreen = document.getElementById('initialScreen');
+      const newGameBtn = document.getElementById('newGameButton');
+      const joinGameBtn = document.getElementById('joinGameButton');
+      const gameCodeInput = document.getElementById('gameCodeInput');
+      const gameCodeDisplay = document.getElementById('gameCodeDisplay');
+      const gameScoreBlueDisplay = document.getElementById('gameScoreBlueDisplay');
+      const gameScoreRedisplay = document.getElementById('gameScoreRedDisplay');
+
+      //EventListener 선언 하기
+      newGameBtn.addEventListener('click' , newGame);
+      joinGameBtn.addEventListener('click' , joinGame);
+
+      function newGame(){
+        socket.emit('newGame');
+      init();
+    }
+
+      function joinGame(){
+        const code = gameCodeInput.value; // ElementId 선언한곳에서 value 값을 가져온다.
+      socket.emit('joinGame' , code);
+      init();
+    }
+
+      let canvas, ctx;            //캔버스 완련 선언
+      let playerNumber;           //플레이어번호
+      let gameActive = false;     //게임이 시작 됬는지 확인하는 Flag 값
+
+      function init() {
+        initialScreen.style.display = "none"; //해당 initialScreen을 안보이게 한다.
+      gameScreen.style.display = "block";   //gameScreen을 보여준다.
+
+      canvas = document.getElementById('canvas'); //선언한 캔버스를 가저온다.
+      ctx = canvas.getContext('2d');              //2D 선언을 한다.
+
+      canvas.width = canvas.height = 600;         //캔버스 크기는 600 * 600
+
+      ctx.fillStype = 'black';
+      ctx.fillRect(0,0 , canvas.width , canvas.height);   //캔버스 네모로 그려주는 함수
+
+      document.addEventListener('keydown' , keydown);     //키 이벤트 핸들러를 등록
+      gameActive = true;                                  //게임이 시작됬다는것을 알려주는 Flag
+    }
+
+      function keydown(e) {
+        socket.emit('keydown', e.keyCode);
+    }
+
+      function paintGame(state)   //게임 랜더링 순서
+      {
+        ctx.fillStype = 'black';
+      ctx.fillRect =  (0,0, canvas.width, canvas.height);     //뒷 배경
+
+      const box = state.box;
+      const gridsize = state.gridsize;
+      const size = canvse.width / gridsize;
+
+      ctx.fillStype = 'yellow';
+      ctx.fillRect =  (box.x * size ,box.y * size, size, size);
+
+      paintPlayer(state.players[0], size , 'blue');           //첫번쨰 플레이어 렌더
+      paintPlayer(state.players[1], size , 'red');            //두번째 플레이어 렌더
+
+      gameScoreBlueDisplay.innerText = state.scoreblue;       //스코어 갱신
+      gameScoreRedisplay.innerText = state.scorered;
+
+    }
+
+      function paintPlayer(playerState, size , colour){
+
+        ctx.fillRect = colour;
+      ctx.fillRect(playerState.pos.x * size , playerState.pos.y * size , size , size);    //박스를 랜더링 해준다. 
+    }
+
+      function handleInit(number){    //번호 값을 받아서 플레이어 넘버에 저장
+        playerNumber = number;
+    }
+
+      function handleGameState(gameState){        //게임의 상태값을 전달
+        if(!gameActive)
+      {
+            return;
+        }
+
+      gameState = JSON.parse(gameState);
+        requestAnimationFrame(() => paintGame(gameState));
+    }
+
+      function handleGameOver(data){      //게임 오버 이벤트 핸들러
+        if(!gameActive)
+      {
+            return;
+        }
+
+      data = JSON.parse(data);
+
+      gameActive = false;
+
+      if(data.winner === playerNumber)
+      {
+        alert('You Win!');
+        }
+      else
+      {
+        alert('You Lose!');
+        }
+    }
+
+      function handleGameCode(gameCode) {     //게임 코드 보여주는 핸들러
+        gameCodeDisplay.innerText = gameCode;       //게임 방문자열를 보여준다. 
+    }
+
+      function handleUnknownCode() {      //코드가 없을경우 이벤트 핸들러
+        reset();
+      alert('Unknown Game Code');
+    }
+
+      function handleTooManyPlayers() {       //이미 게임이 시작된 방 핸들러
+        reset();
+      alert('This Game Is already in progress');
+    }
+
+      function reset() {                      //화면을 리셋 해준다. 
+
+        playerNumber = null;
+      gameCodeInput.value = '';
+      initialScreen.style.display = "block";
+      gameScreen.style.display = "none";
+    }
+
+    </script>
+
+
+
+
+  </html>
