@@ -8,12 +8,23 @@ html(lang="en")
         header
             h1 Seop
         main
-            form#nick
-                input(type='text', placeholder='닉네임' required)
-                button Save
+            div#welcome
+                form
+                    input(placeholder="Room Name", required, type=text)
+                    button Enter Room
+                h4 방 목록 :
+                ul
 
-            ul
-            form#message
-                input(type='text', placeholder='메세지 입력해주세용' required)
-                button Send
+            div#room
+                h3
+                ul
+                form#name
+                    input(placeholder="nickName", required, type=text)
+                    button Send
+
+                form#msg
+                    input(placeholder="message", required, type=text)
+                    button Send
+
+        script(src="/socket.io/socket.io.js")
         script(src="/public/js/app.js")
