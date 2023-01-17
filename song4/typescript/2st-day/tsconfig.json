@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "lib": [
+      "ES2021",
+    ],
+    "esModuleInterop": true,
+    "target": "ES2021",
+  }
+}
