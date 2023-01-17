@@ -1,4 +1,4 @@
-function sum3(a, b) {
+function sum3(a, b):number {
   console.log(typeof a, 'a type');
   console.log(typeof b, 'b type');
   return a + b;
@@ -36,4 +36,8 @@ let test2 = 4;
  * 
  * 어째서 이런일이 일어나는걸까?
  * 
+ * 이후에 함수 sum3의 리턴타입을 number로 지정해보았다.
+ * 기대한 작동은 11, 15번 행에서의 오류발생이였다.
+ * 오류는 발생하지 않았고 13, 17의 실행결과 또한 number가 아닌 string이였다.
+ * 함수의 리턴타입을 지정했는데도 오류가 발생하지 않는 이유도 모르겠다.
  */
