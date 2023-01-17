@@ -1,0 +1,15 @@
+{
+  "include": [
+    "src/**/*.ts" // src폴더 아래의 *.ts파일을 보겠다.
+  ],
+  "compilerOptions": {
+    "lib": [
+      "ES2021",
+    ],
+    "esModuleInterop": true,
+    "target": "ES2021",
+    // "rootDir": "src",  // 컴파일될 타입스크립트 코드들의 위치를 명시
+    "outDir": "dist",     // 컴파일 후 생성되는 js파일이 생성될 폴더명
+    "strictNullChecks": true,
+  },
+}
