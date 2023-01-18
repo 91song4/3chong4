@@ -1,3 +1,4 @@
+-- 1회차
 -- 문제 1
 -- 연봉이 최대 5,000만원을 넘지 않는 
 -- 부서 ID가 17인 사원들 및
@@ -83,3 +84,21 @@ WHERE
 --   )
 -- ORDER BY
 --   ID;
+-- 2회차
+SELECT
+  b.AUTHOR_ID,
+  c.AUTHOR_NAME,
+  b.CATEGORY,
+  SUM(a.SALES * b.PRICE) as SALES
+FROM
+  BOOK_SALES a
+  INNER JOIN BOOK b ON a.BOOK_ID = b.BOOK_ID
+  INNER JOIN AUTHOR c ON b.AUTHOR_ID = c.AUTHOR_ID
+WHERE
+  a.SALES_DATE a.SALES_DATE < '2022-02-01'
+GROUP BY
+  b.AUTHOR_ID,
+  b.CATEGORY
+ORDER BY
+  b.AUTHOR_ID,
+  b.CATEGORY DESC

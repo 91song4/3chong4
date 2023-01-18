@@ -1,0 +1,17 @@
+{
+  "include": [
+    "src/**/*.ts" // src폴더 아래의 *.ts파일을 보겠다.
+  ],
+  "compilerOptions": {
+    "lib": [
+      "ES2015",
+      "DOM"
+    ],
+    "esModuleInterop": true,
+    "target": "ES5",
+    // "rootDir": "src",  // 컴파일될 타입스크립트 코드들의 위치를 명시
+    "outDir": "dist", // 컴파일 후 생성되는 js파일이 생성될 폴더명
+    "strictNullChecks": true,
+    "noImplicitAny": true, // '암시적'인 any 타입을 허용하지 않는다.
+  },
+}
