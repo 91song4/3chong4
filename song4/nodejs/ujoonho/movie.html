@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <h1><span id="movie_title"></span></h1>
+  <ul>
+    <li>ID : <span id="id"></span></li>
+    <li>등록자 : <span id="name"></span></li>
+    <li>작성일 : <span id="created_at"></span></li>
+  </ul>
+  <a href="movies.html">리스트 보기</a>
+</body>
+
+<script>
+  const urlSearch = new URLSearchParams(location.search);
+  const id = urlSearch.get('id');
+
+  fetch(`http://localhost:3100/movies/:${id}`)
+    .then((response) => response.json())
+    .then((movie) => {
+      document.querySelector('#movie_title').innerHTML = movie.movie_title;
+      document.querySelector('#id').innerHTML = movie.id;
+      document.querySelector('#name').innerHTML = movie.user_id;
+      document.querySelector('#created_at').innerHTML = movie.created_at;
+      // Object.keys(movie)
+      // Object.values(movie)
+    });
+</script>
+
+</html>
