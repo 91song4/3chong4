@@ -7,8 +7,9 @@ tsc --init
 사용모듈
 - express
 - dotenv
+- cors
 - typescript -D
-- @types/(node, express, dotenv) -D
+- @types/(node, express, dotenv, cors) -D
 - ts-node-dev -D  
   파일이 변경되면 자동으로 변경된 ts파일을 실행시켜준다.
 
