@@ -23,4 +23,5 @@
     // 암시적 any 타입을 허용하지 않는다   
     "noImplicitAny": true
   }
+  
 }
