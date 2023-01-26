@@ -1,33 +1,11 @@
-console.log("\n");
+import Color from './types';
 
-// enums
-import Color, { Direction } from "./types";
+const { Red, Green, Blue } = Color;
 
-// interface
-import type { IThingsInLife } from "./types";
+const green = Green;
 
-// interface TTableData {
-//   [x: string]: string;
-// };
+const veggies = green;
 
-type TTableData = {
-  [x: string]: string;
-};
+const pepper = green;
 
-const enum TableKey {
-  ID = "ID",
-  FirstName = "firstName",
-  LastName = "lastName",
-  Score = "score",
-}
-
-type StrictTableData = {[key in TableKey]: string;};
-type lessStrictTableData = {[key in TableKey]?: string;};
-
-const myTableData: lessStrictTableData = {
-  ID: "1",
-  firstName: "jane",
-  lastName: "doe",
-};
-
-console.log(myTableData);
+const skye = Blue; 

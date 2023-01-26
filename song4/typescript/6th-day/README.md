@@ -294,3 +294,45 @@ console.log(myObject);
 ### Enum과 tree-shaking
 
 <br>
+
+```typescript
+Tree-shaking(트리쉐이킹)은 사용하지 않는 코드를 제거하는 기능을 말합니다.
+
+우리가 이번 학습에서 봐 왔던 enum은 TS 자체의 기능이기때문에 tree-shaking이 되지 않습니다 🤯
+
+// index.ts
+enum Color {
+  Red = 'Red',
+  Green = 'Green',
+  Blue = 'Blue',
+}
+
+// 쓰이지 않는 enum을 트랜스파일 해보면...
+// index.js
+"use strict";
+var Color;
+(function (Color) {
+    Color["Red"] = "Red";
+    Color["Green"] = "Green";
+    Color["Blue"] = "Blue";
+})(Color || (Color = {}));
+
+트리쉐이킹이 전혀 되지 않은채로 JS코드로 트랜스파일이 됩니다.
+
+물론 쓰이지 않는 코드는 지워야겠지만, 우선 더 효율적이고 쓰이더라도 트리쉐이킹이 되는 enum선언 방법을 알아보겠습니다.
+
+// index.ts
+const enum Color {
+  Red = "Red",
+  Green = "Green",
+  Blue = "Blue",
+}
+
+const green = Color.Green;
+
+// index.js
+"use strict";
+const green = "Green" /* Color.Green */;
+
+앞에 const만 붙였을 뿐인데 쓰여진 부분만 깔끔하게 트랜스파일이 되었습니다. 이런식으로 우리는 JS로 번들되는 코드 양을 줄일 수 있습니다.
+```
