@@ -13,6 +13,7 @@
     "strict": true,
     "noImplicitAny": true,
     "esModuleInterop": true,
-    "noEmitOnError": true
+    "noEmitOnError": true,
+    "moduleDetection": "force"
   }
 }
