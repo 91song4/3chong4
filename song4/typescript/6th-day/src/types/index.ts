@@ -22,3 +22,11 @@ export interface IThingsInLife {
 }
 
 export default Color;
+
+export interface MyInterface {
+  value: string | number | string[];
+}
+
+export interface MyInterfaceG<T = string> {
+  value: T;
+}

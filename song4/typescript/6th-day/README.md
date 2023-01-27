@@ -207,10 +207,11 @@ function printRGB(color: Color): Color {
   return color;
 }
 
-console.log(printRGB(Color.RED));     // RED
-console.log(printRGB(Color.GREEN));   // GREEN
-console.log(printRGB(Color.BLACK));   // error
+console.log(printRGB(Color.RED)); // RED
+console.log(printRGB(Color.GREEN)); // GREEN
+console.log(printRGB(Color.BLACK)); // error
 ```
+
 <br>
 
 ### 인터페이스의 타입으로 부여하기
@@ -253,6 +254,7 @@ console.log(printThingsInLife(things));
 interface - INameOfInterface
 type - TNameOfType
 ```
+
 <br>
 
 ### Object.<메소드>랑 함께 사용해보기
@@ -365,14 +367,15 @@ const numberObject: MyInterface = { value: 1234 };
 const stringArrayObject: MyInterface = { value: ["hello", "world"] };
 
 // 제네릭(generic)을 써야하는 이유는 뭘까? 아래 예문에서 알아보자
-interface MyInterfaceG<T = string>{
+interface MyInterfaceG<T = string> {
   value: T;
 }
 
-
 const stringObjectG: MyInterfaceG<string> = { value: "hello world!" };
 const numberObjectG: MyInterfaceG<number> = { value: 1234 };
-const stringArrayObjectG: MyInterfaceG<string[]> = { value: ["hello", "world"] };
+const stringArrayObjectG: MyInterfaceG<string[]> = {
+  value: ["hello", "world"],
+};
 const defaultObjectG: MyInterfaceG = { value: "hellow world!!" };
 
 // const stringArrayObjectG_2: MyInterfaceG<Array<string>> = { value: ["hello", "world"] }; // 지저분해보인다.
@@ -387,6 +390,23 @@ const defaultObjectG: MyInterfaceG = { value: "hellow world!!" };
 - 함수
 
 ```typescript
+type User = {
+  email: string;
+  name: string;
+};
+
+function getData<T = string>(data: T): T {
+  return data;
+}
+
+console.log(getData<string>("hello world!"));
+console.log(getData("hello world!"));
+console.log(getData<number>(1234));
+console.log(getData<User>({ email: "email@email.com", name: "katie" }));
+console.log(getData<String[]>(["string", "data"]));
+console.log(getData<String[]>([]));
+
+console.log();
 ```
 
 <br>
@@ -394,4 +414,5 @@ const defaultObjectG: MyInterfaceG = { value: "hellow world!!" };
 - 클래스
 
 ```typescript
+
 ```
