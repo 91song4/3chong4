@@ -336,3 +336,62 @@ const green = "Green" /* Color.Green */;
 
 앞에 const만 붙였을 뿐인데 쓰여진 부분만 깔끔하게 트랜스파일이 되었습니다. 이런식으로 우리는 JS로 번들되는 코드 양을 줄일 수 있습니다.
 ```
+
+<br>
+
+### 제네릭 타입
+
+제네릭은 선언 시점이 아닌 생성 시점에 타입을 명시하여 하나의 타입만이 아닌 다양한 타입을 사용할 수 있도록 하는 기법입니다.
+
+제네릭을 선언할 때 관용적으로 사용되는 대표적인 식별자로 `T`가 있고, 그 외에 `U`와 `V`가 있습니다. 반드시 `T`, `U`, `V`를 사용하여 하는 것은 아니지만 관용적인 식별자를 쓰는게 모범적입니다.
+
+어떻게 보면 어떤 타입을 전달해도 사용이 가능한 `any`랑 다른점이 있을지 고민이 될수도 있지만 `any`는 타입체크를 전혀 하지 않아서 전달받은 데이터의 타입을 알 수 없고 반환할 때 타입의 정보를 반환하지 않습니다. 이런 반면에 제네릭은 전달받은 타입을 확인 및 반환을 할 수 있고 타입을 제한 할 수도 있습니다
+
+<br>
+
+- 객체
+
+```typescript
+interface MyInterface {
+  value: string | number | string[];
+}
+
+// const error: readonly Array<boolean> = [false];          // error
+// const okay: readonly boolean[] = [false];                // okay
+// const okayGeneric: ReadonlyArray<boolean> = [false];     // oaky
+
+const stringObject: MyInterface = { value: "hello world!" };
+const numberObject: MyInterface = { value: 1234 };
+const stringArrayObject: MyInterface = { value: ["hello", "world"] };
+
+// 제네릭(generic)을 써야하는 이유는 뭘까? 아래 예문에서 알아보자
+interface MyInterfaceG<T = string>{
+  value: T;
+}
+
+
+const stringObjectG: MyInterfaceG<string> = { value: "hello world!" };
+const numberObjectG: MyInterfaceG<number> = { value: 1234 };
+const stringArrayObjectG: MyInterfaceG<string[]> = { value: ["hello", "world"] };
+const defaultObjectG: MyInterfaceG = { value: "hellow world!!" };
+
+// const stringArrayObjectG_2: MyInterfaceG<Array<string>> = { value: ["hello", "world"] }; // 지저분해보인다.
+
+// 다른 타입을 쓰고 싶을 때 선언부로 가서 추가해줘야 하는 차이점
+// 드러나있는 코드에 명시적으로 타입이 적혀있어서 타입을 알아보기 쉬움
+// 기초값(default)를 설정할 수 있다.
+```
+
+<br>
+
+- 함수
+
+```typescript
+```
+
+<br>
+
+- 클래스
+
+```typescript
+```
