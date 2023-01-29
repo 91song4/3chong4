@@ -1,0 +1,20 @@
+{
+  // include : 컴파일할 파일 경로를 설정합니다. [ src폴더 하위의 모든 .ts 확장자를 가진 파일 ]
+  "include": ["src/**/*.ts"],
+  "compilerOptions": {
+    // es5 에서는 promise 사용 불가 => es6(es2015)추가 및 새로운 값 추가시 dom도 같이 추가
+    "lib": ["ES2015", "dom"],
+    // esModuleInterop 속성이 위의 코드 처럼 true로 설정될 경우, ES6 모듈 사양을 준수하여 CommonJS 모듈을 가져올 수 있게 됩니다.
+    // e.g. typescript-test.ts => import express from "express"
+    "esModuleInterop": true,
+    "target": "ES5",
+    // rootDir : 컴파일될 타입스크립트 코드들의 위치를 명시합니다. 
+    // "rootDir": "src",
+    // outDir : 컴파일 후 생성되는 js파일이 생성될 폴더명
+    "outDir": "dist",
+    // strictNullChecks
+    "strictNullChecks": true,
+    // 암시적 any 타입을 허용하지 않는다   
+    "noImplicitAny": true
+  }
+}
