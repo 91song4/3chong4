@@ -1,7 +1,7 @@
 // getElementById 정의로 가보면 HTMLElement, null을 리턴 받는걸 확인
 const container: HTMLElement | null = document.getElementById("app");
-const pokemons: number = 1008;
-
+const pokemons: number = 100;
+//max1008
 interface IPokemon {
     id: number;
     name: string;
