@@ -1,17 +1,43 @@
-type User = {
-  email: string;
-  name: string;
-};
-
-function getData<T = string>(data: T): T {
-  return data;
+interface IStack<T> {
+  push(item: T): void;
+  pop(): T | undefined;
+  peek(): T | undefined;
+  size(): number;
 }
 
-console.log(getData<string>("hello world!"));
-console.log(getData("hello world!"));
-console.log(getData<number>(1234));
-console.log(getData<User>({ email: "email@email.com", name: "katie" }));
-console.log(getData<String[]>(['string','data']));
-console.log(getData<String[]>([]));
+class Stack<T> implements IStack<T> {
+  private storage: T[] = [];
+
+  constructor(private capacity = 4) {}
+
+  push(item: T): void {
+    if (this.size() === this.capacity) {
+      throw Error("stack is full!");
+    }
+
+    this.storage.push(item);
+  }
+
+  pop(): T | undefined {
+    return this.storage.pop();
+  }
+
+  peek(): T | undefined {
+    return this.storage[this.size() - 1];
+  }
+
+  size(): number {
+    return this.storage.length;
+  }
+}
+
+const stringStack: Stack<string> = new Stack<string>();
+stringStack.push("hello");
+stringStack.push('world');
+stringStack.push('!');
+stringStack.push('!');
+stringStack.push('!');
+
+console.log(stringStack.peek());
 
 console.log();

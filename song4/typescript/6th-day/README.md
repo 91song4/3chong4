@@ -406,6 +406,25 @@ console.log(getData<User>({ email: "email@email.com", name: "katie" }));
 console.log(getData<String[]>(["string", "data"]));
 console.log(getData<String[]>([]));
 
+enum Status {
+  Initiated = "Initiated",
+  Pending = "Pending",
+  Shipped = "Shipped",
+  Delivered = "Delivered",
+}
+
+interface Order {
+  buyer: string;
+  orderStatus: Status;
+}
+
+const orders: Order[] = Object.entries<Status>(Status).map((status, index) => {
+  return {
+    buyer: `buyer #${index}`,
+    orderStatus: status[1],
+  };
+});
+
 console.log();
 ```
 
