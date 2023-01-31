@@ -47,3 +47,10 @@ export interface Order {
   buyer: string;
   orderStatus: Status;
 }
+
+export interface ILinearStructure<T> {
+  push(item: T): void;
+  pop(): T | undefined;
+  peek(): T | undefined;
+  size(): number;
+}

@@ -433,5 +433,329 @@ console.log();
 - 클래스
 
 ```typescript
+import type { ILinearStructure } from "../types";
 
+class Stack<T> implements ILinearStructure<T> {
+  private storage: T[] = [];
+
+  constructor(private capacity = 4) {}
+
+  push(item: T): void {
+    if (this.size() === this.capacity) {
+      throw Error("stack is full!");
+    }
+
+    this.storage.push(item);
+  }
+
+  pop(): T | undefined {
+    return this.storage.pop();
+  }
+
+  peek(): T | undefined {
+    return this.storage[this.size() - 1];
+  }
+
+  size(): number {
+    return this.storage.length;
+  }
+}
+
+const stringStack: Stack<string> = new Stack<string>();
+stringStack.push("hello");
+stringStack.push("world");
+stringStack.push("!");
+stringStack.push("!");
+// stringStack.push("!");
+
+console.log(stringStack.peek());
+console.log(stringStack.pop());
+stringStack.push("!");
+
+class Queue<T> implements ILinearStructure<T> {
+  private storage: T[] = [];
+
+  constructor(private capacity = 4) {}
+
+  push(item: T): void {
+    if (this.size() === this.capacity) {
+      throw new Error("queue is full!");
+    }
+
+    this.storage.push(item);
+  }
+
+  pop(): T | undefined {
+    return this.storage.shift();
+  }
+
+  peek(): T | undefined {
+    return this.storage[0];
+  }
+
+  size(): number {
+    return this.storage.length;
+  }
+}
+
+const stringQueue: Queue<string> = new Queue<string>();
+stringQueue.push("hello");
+stringQueue.push("world");
+stringQueue.push("!");
+stringQueue.push("!");
+// stringQueue.push('!');
+
+console.log(stringQueue.peek());
+console.log(stringQueue.pop());
+stringQueue.push("!");
+```
+
+<br>
+
+### 유틸리티 타입 (Utility Types)
+
+<br>
+
+- Partial<Type>
+
+```typescript
+interface Toppings {
+  tomatoes: boolean;
+  onion: boolean;
+  lettuce: boolean;
+  ketchup: boolean;
+}
+
+const toppings: Toppings = {
+  tomatoes: true,
+  onion: true,
+  lettuce: true,
+  ketchup: true,
+};
+
+const partialToppings: Partial<Toppings> = {
+  tomatoes: true,
+  // onion: true,
+  // lettuce: true,
+  // ketchup: true,
+};
+
+Partial(파셜)은 특정 타입에 속해있는 집합을 모두 선택적으로(optionals) 만드는 타입으로 변환 해줍니다.
+```
+
+<br>
+
+- Required<Type>
+
+```typescript
+interface Toppings {
+  tomatoes: boolean;
+  onion: boolean;
+  lettuce: boolean;
+  ketchup: boolean;
+}
+
+const toppings: Toppings = {
+  tomatoes: true,
+  onion: true,
+  lettuce: true,
+  ketchup: true,
+};
+
+const partialToppings: Partial<Toppings> = {
+  tomatoes: true,
+  // onion: true,
+  // lettuce: true,
+  // ketchup: true,
+};
+
+const requiredToppings: Required<Partial<Toppings>> = {
+  tomatoes: true,
+  onion: true,
+  lettuce: true,
+  ketchup: true,
+};
+
+------------------------------------------------------------
+
+interface BubbleTeaOrder {
+  tea: boolean;
+  straw?: boolean;
+}
+
+const myBubbleTeaOrder: Required<BubbleTeaOrder> = {
+  tea: true,
+  straw: true,
+};
+
+특정 타입에 속해있는 집합을 모두 필수로 변환하는 타입입니다.
+
+이러한 것들을 사용하는 이유는 앞으로 외부 라이브러리에서 타입을 가져와서 쓰는경우가 대부분이다.
+그렇게 가져온 타입들을 잘 제어해서 사용하기 위함이다.
+```
+
+<br>
+
+- Readonly<Type>
+
+```typescript
+interface BankAccount {
+  accountNumber: string;
+  balance: bigint;
+}
+
+const myAccount: Readonly<BankAccount> = {
+  accountNumber: "1234",
+  balance: BigInt(10000000),
+};
+
+console.log(myAccount);
+// myAccount.balance = BigInt(0);
+// console.log(myAccount);
+
+Readonly는 유틸리티 타입 이름 그대로 한 타입의 집합을 읽기권한만 가능하게 변환해주는 타입입니다.
+```
+
+<br>
+
+- Record<Keys, Type>
+
+```typescript
+type ObjectTypeRecord = Record<string, string>;
+type ObjectTypeObject = {
+  [x: string]: string;
+};
+
+type Country = "Korea" | "USA" | "Canada" | "UK";
+type CountryCode = 82 | 1 | 44;
+
+type CountryToCountryCode = Record<Country, CountryCode>;
+type anotherCountryToCountryCode = {
+  [key in Country]: CountryCode;
+};
+
+const countries: CountryToCountryCode = {
+  Korea: 82,
+  USA: 1,
+  Canada: 1,
+  UK: 44,
+};
+
+console.log(countries);
+```
+
+<br>
+
+- Omit<Type, Keys>
+
+```typescript
+
+interface UserInfo{
+  userName: string;
+  favoriteColor: string;
+  email: string;
+  password: string;
+}
+
+type LessUserInfo = Omit<UserInfo, "password" | 'email'>;
+
+const newUser: LessUserInfo = {
+  userName: 'pony',
+  favoriteColor: 'rainbow',
+  // password: '1234',
+  // email:'hello@world.hello'
+}
+
+Omit은 특정 타입에 구성되어있는 프로퍼티를 생략시킬 때 쓰는 타입입니다.
+```
+
+<br>
+
+- Exclude<UnionType, ExcludedMembers>
+
+```typescript
+type MyType = "dog" | "cat" | "alpaca";
+type LessMyType = Exclude<MyType, "cat" | "alpaca">;
+
+const onlyDogAllowed: LessMyType = "dog";
+// const onlyDogAllowed: LessMyType = "cat";
+
+type onChange = (isDone: boolean) => boolean;
+type GruopOfTypes = string | undefined | onChange;
+
+type FunctionType = Exclude<GruopOfTypes, string | undefined>;
+
+const onChangeHandler: FunctionType = (isDone) => {
+  return isDone;
+}
+
+console.log(onChangeHandler(true));
+// const today: FunctionType = 'great day';
+
+
+Exclude라는 타입은 유니언 타입에 속해있는 속성들을 생략할 때 쓰입니다.
+```
+
+<br>
+
+- Pick<Type, Keys>
+
+```typescript
+interface User {
+  firstName: string;
+  lastName: string;
+}
+
+interface Student {
+  user: User;
+  isGraduated: boolean;
+  school: string;
+}
+
+type StudentName = Pick<Student, "user" | "isGraduated">;
+const studentName: StudentName = {
+  user: {
+    firstName: "winnie",
+    lastName: "pooh",
+  },
+  isGraduated: true,
+};
+
+console.log(studentName);
+
+
+Pick타입은 한 타입의 특정 프로퍼티들만 뽑아쓸수 있도록 도와주는 타입입니다.
+```
+
+<br>
+
+- Extract<Type, Union>
+
+```typescript
+type MyPet = "dog" | "cat" | "alpaca";
+type ExtractedMyPet = Extract<MyPet, "alpaca" | "cat">;
+
+const onlyAlpacaOrCatAllowed: ExtractedMyPet = 'cat';
+console.log(onlyAlpacaOrCatAllowed);
+
+
+Extract는 Exclude의 반대입니다. 타입에서 필요한 유니언만 뽑아오는건데 Exclude에서 썼던 예제를 다시 보겠습니다.
+```
+
+<br>
+
+- NonNullable<Type>
+
+```typescript
+type QueryParam = string | string[] | undefined | null;
+type NonNullableQueryParam = NonNullable<QueryParam>;
+
+const queryParam1: NonNullableQueryParam = 'orders';
+const queryParam2: NonNullableQueryParam = ['orders'];
+// const forbiddenQueryParam: NonNullableQueryParam = undefined;
+// const queryParam4: NonNullableQueryParam = null;
+
+
+
+NonNullable타입은 특정의 타입에서 null 또는 undefined타입을 생략해주는 타입입니다.
 ```
