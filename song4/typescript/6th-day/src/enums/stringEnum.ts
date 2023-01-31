@@ -1,19 +1,19 @@
 import Color from "../types";
 
-const myColor: Color = Color.RED;
+const myColor: Color = Color.Red;
 console.log({ myColor });
 
-const yourColor: Color.BLUE = Color.BLUE;
+const yourColor: Color.Blue = Color.Blue;
 console.log({ yourColor });
 
-const otherColor: string = Color.GREEN;
+const otherColor: string = Color.Green;
 console.log({ otherColor });
 
-const chorock: Color = Color.GREEN;
+const chorock: Color = Color.Green;
 console.log(chorock);
 
 // type casting
-const colorOfSky: Color.BLUE = Color.GREEN as Color.BLUE;
+const colorOfSky: Color.Blue = Color.Green as Color.Blue;
 console.log(colorOfSky);
 
 const faveColor = "LOVE" as Color;

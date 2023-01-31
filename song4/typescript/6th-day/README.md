@@ -207,10 +207,11 @@ function printRGB(color: Color): Color {
   return color;
 }
 
-console.log(printRGB(Color.RED));     // RED
-console.log(printRGB(Color.GREEN));   // GREEN
-console.log(printRGB(Color.BLACK));   // error
+console.log(printRGB(Color.RED)); // RED
+console.log(printRGB(Color.GREEN)); // GREEN
+console.log(printRGB(Color.BLACK)); // error
 ```
+
 <br>
 
 ### 인터페이스의 타입으로 부여하기
@@ -253,6 +254,7 @@ console.log(printThingsInLife(things));
 interface - INameOfInterface
 type - TNameOfType
 ```
+
 <br>
 
 ### Object.<메소드>랑 함께 사용해보기
@@ -335,4 +337,425 @@ const green = Color.Green;
 const green = "Green" /* Color.Green */;
 
 앞에 const만 붙였을 뿐인데 쓰여진 부분만 깔끔하게 트랜스파일이 되었습니다. 이런식으로 우리는 JS로 번들되는 코드 양을 줄일 수 있습니다.
+```
+
+<br>
+
+### 제네릭 타입
+
+제네릭은 선언 시점이 아닌 생성 시점에 타입을 명시하여 하나의 타입만이 아닌 다양한 타입을 사용할 수 있도록 하는 기법입니다.
+
+제네릭을 선언할 때 관용적으로 사용되는 대표적인 식별자로 `T`가 있고, 그 외에 `U`와 `V`가 있습니다. 반드시 `T`, `U`, `V`를 사용하여 하는 것은 아니지만 관용적인 식별자를 쓰는게 모범적입니다.
+
+어떻게 보면 어떤 타입을 전달해도 사용이 가능한 `any`랑 다른점이 있을지 고민이 될수도 있지만 `any`는 타입체크를 전혀 하지 않아서 전달받은 데이터의 타입을 알 수 없고 반환할 때 타입의 정보를 반환하지 않습니다. 이런 반면에 제네릭은 전달받은 타입을 확인 및 반환을 할 수 있고 타입을 제한 할 수도 있습니다
+
+<br>
+
+- 객체
+
+```typescript
+interface MyInterface {
+  value: string | number | string[];
+}
+
+// const error: readonly Array<boolean> = [false];          // error
+// const okay: readonly boolean[] = [false];                // okay
+// const okayGeneric: ReadonlyArray<boolean> = [false];     // oaky
+
+const stringObject: MyInterface = { value: "hello world!" };
+const numberObject: MyInterface = { value: 1234 };
+const stringArrayObject: MyInterface = { value: ["hello", "world"] };
+
+// 제네릭(generic)을 써야하는 이유는 뭘까? 아래 예문에서 알아보자
+interface MyInterfaceG<T = string> {
+  value: T;
+}
+
+const stringObjectG: MyInterfaceG<string> = { value: "hello world!" };
+const numberObjectG: MyInterfaceG<number> = { value: 1234 };
+const stringArrayObjectG: MyInterfaceG<string[]> = {
+  value: ["hello", "world"],
+};
+const defaultObjectG: MyInterfaceG = { value: "hellow world!!" };
+
+// const stringArrayObjectG_2: MyInterfaceG<Array<string>> = { value: ["hello", "world"] }; // 지저분해보인다.
+
+// 다른 타입을 쓰고 싶을 때 선언부로 가서 추가해줘야 하는 차이점
+// 드러나있는 코드에 명시적으로 타입이 적혀있어서 타입을 알아보기 쉬움
+// 기초값(default)를 설정할 수 있다.
+```
+
+<br>
+
+- 함수
+
+```typescript
+type User = {
+  email: string;
+  name: string;
+};
+
+function getData<T = string>(data: T): T {
+  return data;
+}
+
+console.log(getData<string>("hello world!"));
+console.log(getData("hello world!"));
+console.log(getData<number>(1234));
+console.log(getData<User>({ email: "email@email.com", name: "katie" }));
+console.log(getData<String[]>(["string", "data"]));
+console.log(getData<String[]>([]));
+
+enum Status {
+  Initiated = "Initiated",
+  Pending = "Pending",
+  Shipped = "Shipped",
+  Delivered = "Delivered",
+}
+
+interface Order {
+  buyer: string;
+  orderStatus: Status;
+}
+
+const orders: Order[] = Object.entries<Status>(Status).map((status, index) => {
+  return {
+    buyer: `buyer #${index}`,
+    orderStatus: status[1],
+  };
+});
+
+console.log();
+```
+
+<br>
+
+- 클래스
+
+```typescript
+import type { ILinearStructure } from "../types";
+
+class Stack<T> implements ILinearStructure<T> {
+  private storage: T[] = [];
+
+  constructor(private capacity = 4) {}
+
+  push(item: T): void {
+    if (this.size() === this.capacity) {
+      throw Error("stack is full!");
+    }
+
+    this.storage.push(item);
+  }
+
+  pop(): T | undefined {
+    return this.storage.pop();
+  }
+
+  peek(): T | undefined {
+    return this.storage[this.size() - 1];
+  }
+
+  size(): number {
+    return this.storage.length;
+  }
+}
+
+const stringStack: Stack<string> = new Stack<string>();
+stringStack.push("hello");
+stringStack.push("world");
+stringStack.push("!");
+stringStack.push("!");
+// stringStack.push("!");
+
+console.log(stringStack.peek());
+console.log(stringStack.pop());
+stringStack.push("!");
+
+class Queue<T> implements ILinearStructure<T> {
+  private storage: T[] = [];
+
+  constructor(private capacity = 4) {}
+
+  push(item: T): void {
+    if (this.size() === this.capacity) {
+      throw new Error("queue is full!");
+    }
+
+    this.storage.push(item);
+  }
+
+  pop(): T | undefined {
+    return this.storage.shift();
+  }
+
+  peek(): T | undefined {
+    return this.storage[0];
+  }
+
+  size(): number {
+    return this.storage.length;
+  }
+}
+
+const stringQueue: Queue<string> = new Queue<string>();
+stringQueue.push("hello");
+stringQueue.push("world");
+stringQueue.push("!");
+stringQueue.push("!");
+// stringQueue.push('!');
+
+console.log(stringQueue.peek());
+console.log(stringQueue.pop());
+stringQueue.push("!");
+```
+
+<br>
+
+### 유틸리티 타입 (Utility Types)
+
+<br>
+
+- Partial<Type>
+
+```typescript
+interface Toppings {
+  tomatoes: boolean;
+  onion: boolean;
+  lettuce: boolean;
+  ketchup: boolean;
+}
+
+const toppings: Toppings = {
+  tomatoes: true,
+  onion: true,
+  lettuce: true,
+  ketchup: true,
+};
+
+const partialToppings: Partial<Toppings> = {
+  tomatoes: true,
+  // onion: true,
+  // lettuce: true,
+  // ketchup: true,
+};
+
+Partial(파셜)은 특정 타입에 속해있는 집합을 모두 선택적으로(optionals) 만드는 타입으로 변환 해줍니다.
+```
+
+<br>
+
+- Required<Type>
+
+```typescript
+interface Toppings {
+  tomatoes: boolean;
+  onion: boolean;
+  lettuce: boolean;
+  ketchup: boolean;
+}
+
+const toppings: Toppings = {
+  tomatoes: true,
+  onion: true,
+  lettuce: true,
+  ketchup: true,
+};
+
+const partialToppings: Partial<Toppings> = {
+  tomatoes: true,
+  // onion: true,
+  // lettuce: true,
+  // ketchup: true,
+};
+
+const requiredToppings: Required<Partial<Toppings>> = {
+  tomatoes: true,
+  onion: true,
+  lettuce: true,
+  ketchup: true,
+};
+
+------------------------------------------------------------
+
+interface BubbleTeaOrder {
+  tea: boolean;
+  straw?: boolean;
+}
+
+const myBubbleTeaOrder: Required<BubbleTeaOrder> = {
+  tea: true,
+  straw: true,
+};
+
+특정 타입에 속해있는 집합을 모두 필수로 변환하는 타입입니다.
+
+이러한 것들을 사용하는 이유는 앞으로 외부 라이브러리에서 타입을 가져와서 쓰는경우가 대부분이다.
+그렇게 가져온 타입들을 잘 제어해서 사용하기 위함이다.
+```
+
+<br>
+
+- Readonly<Type>
+
+```typescript
+interface BankAccount {
+  accountNumber: string;
+  balance: bigint;
+}
+
+const myAccount: Readonly<BankAccount> = {
+  accountNumber: "1234",
+  balance: BigInt(10000000),
+};
+
+console.log(myAccount);
+// myAccount.balance = BigInt(0);
+// console.log(myAccount);
+
+Readonly는 유틸리티 타입 이름 그대로 한 타입의 집합을 읽기권한만 가능하게 변환해주는 타입입니다.
+```
+
+<br>
+
+- Record<Keys, Type>
+
+```typescript
+type ObjectTypeRecord = Record<string, string>;
+type ObjectTypeObject = {
+  [x: string]: string;
+};
+
+type Country = "Korea" | "USA" | "Canada" | "UK";
+type CountryCode = 82 | 1 | 44;
+
+type CountryToCountryCode = Record<Country, CountryCode>;
+type anotherCountryToCountryCode = {
+  [key in Country]: CountryCode;
+};
+
+const countries: CountryToCountryCode = {
+  Korea: 82,
+  USA: 1,
+  Canada: 1,
+  UK: 44,
+};
+
+console.log(countries);
+```
+
+<br>
+
+- Omit<Type, Keys>
+
+```typescript
+
+interface UserInfo{
+  userName: string;
+  favoriteColor: string;
+  email: string;
+  password: string;
+}
+
+type LessUserInfo = Omit<UserInfo, "password" | 'email'>;
+
+const newUser: LessUserInfo = {
+  userName: 'pony',
+  favoriteColor: 'rainbow',
+  // password: '1234',
+  // email:'hello@world.hello'
+}
+
+Omit은 특정 타입에 구성되어있는 프로퍼티를 생략시킬 때 쓰는 타입입니다.
+```
+
+<br>
+
+- Exclude<UnionType, ExcludedMembers>
+
+```typescript
+type MyType = "dog" | "cat" | "alpaca";
+type LessMyType = Exclude<MyType, "cat" | "alpaca">;
+
+const onlyDogAllowed: LessMyType = "dog";
+// const onlyDogAllowed: LessMyType = "cat";
+
+type onChange = (isDone: boolean) => boolean;
+type GruopOfTypes = string | undefined | onChange;
+
+type FunctionType = Exclude<GruopOfTypes, string | undefined>;
+
+const onChangeHandler: FunctionType = (isDone) => {
+  return isDone;
+}
+
+console.log(onChangeHandler(true));
+// const today: FunctionType = 'great day';
+
+
+Exclude라는 타입은 유니언 타입에 속해있는 속성들을 생략할 때 쓰입니다.
+```
+
+<br>
+
+- Pick<Type, Keys>
+
+```typescript
+interface User {
+  firstName: string;
+  lastName: string;
+}
+
+interface Student {
+  user: User;
+  isGraduated: boolean;
+  school: string;
+}
+
+type StudentName = Pick<Student, "user" | "isGraduated">;
+const studentName: StudentName = {
+  user: {
+    firstName: "winnie",
+    lastName: "pooh",
+  },
+  isGraduated: true,
+};
+
+console.log(studentName);
+
+
+Pick타입은 한 타입의 특정 프로퍼티들만 뽑아쓸수 있도록 도와주는 타입입니다.
+```
+
+<br>
+
+- Extract<Type, Union>
+
+```typescript
+type MyPet = "dog" | "cat" | "alpaca";
+type ExtractedMyPet = Extract<MyPet, "alpaca" | "cat">;
+
+const onlyAlpacaOrCatAllowed: ExtractedMyPet = 'cat';
+console.log(onlyAlpacaOrCatAllowed);
+
+
+Extract는 Exclude의 반대입니다. 타입에서 필요한 유니언만 뽑아오는건데 Exclude에서 썼던 예제를 다시 보겠습니다.
+```
+
+<br>
+
+- NonNullable<Type>
+
+```typescript
+type QueryParam = string | string[] | undefined | null;
+type NonNullableQueryParam = NonNullable<QueryParam>;
+
+const queryParam1: NonNullableQueryParam = 'orders';
+const queryParam2: NonNullableQueryParam = ['orders'];
+// const forbiddenQueryParam: NonNullableQueryParam = undefined;
+// const queryParam4: NonNullableQueryParam = null;
+
+
+
+NonNullable타입은 특정의 타입에서 null 또는 undefined타입을 생략해주는 타입입니다.
 ```

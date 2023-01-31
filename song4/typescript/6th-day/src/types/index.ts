@@ -22,3 +22,35 @@ export interface IThingsInLife {
 }
 
 export default Color;
+
+export interface MyInterface {
+  value: string | number | string[];
+}
+
+export interface MyInterfaceG<T = string> {
+  value: T;
+}
+
+export type User = {
+  email: string;
+  name: string;
+};
+
+export enum Status {
+  Initiated = "Initiated",
+  Pending = "Pending",
+  Shipped = "Shipped",
+  Delivered = "Delivered",
+}
+
+export interface Order {
+  buyer: string;
+  orderStatus: Status;
+}
+
+export interface ILinearStructure<T> {
+  push(item: T): void;
+  pop(): T | undefined;
+  peek(): T | undefined;
+  size(): number;
+}
