@@ -2,9 +2,9 @@ const {  } = require();
 
 class PaymentListRepository {
     findPaymentAll = async () => {
-        const PaymentList = await asd.findAll();
+        const paymentList = await asd.findAll();
 
-        return PaymentList
+        return paymentList
     }
 };
 

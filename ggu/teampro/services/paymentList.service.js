@@ -1,10 +1,10 @@
 const PaymentListRepository = require("../repositories/paymentList.repository");
 
 class PaymentListService {
-    PaymentListRepository = new PaymentListRepository();
+    paymentListRepository = new PaymentListRepository();
 
     findPaymentAll = async () => {
-        const PaymentList = await this.PaymentListRepository.findPaymentAll();
+        const PaymentList = await this.paymentListRepository.findPaymentAll();
 
         return PaymentList
     }
