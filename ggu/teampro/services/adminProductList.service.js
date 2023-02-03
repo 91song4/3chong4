@@ -4,9 +4,9 @@ class AdminProductListService {
     adminProductListRepository = new AdminProductListRepository();
 
     findProductList = async () => {
-        const productList = await this.adminProductListRepository
+        const productList = await this.adminProductListRepository.findProductList()
 
-        return productList
+        return productList;
     }
 }
 

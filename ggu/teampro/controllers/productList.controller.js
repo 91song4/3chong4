@@ -4,9 +4,9 @@ class ProductListController {
     productListService = new ProductListService();
 
     findProductAll = async (req, res, next) => {
-        productList = await this.productListService.findProductAll();
+        const productList = await this.productListService.findProductAll();
 
-        resizeBy.status(201).json({ data: findProductAll })
+        res.status(201).json({ data: productList });
     }
 }
 

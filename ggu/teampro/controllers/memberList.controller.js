@@ -3,10 +3,10 @@ const MemberListService = require("../services/memberList.service");
 class MemberListController {
     memberListService = new MemberListService();
 
-    findMemberList = async() => {
+    findMemberList = async(req, res, next) => {
         const memberList = await this.memberListService.findMemberList();
 
-        return memberList
+        res.status(201).json({ data: memberList })
     }
 }
 

@@ -3,10 +3,10 @@ const AdminProductListService = require("../services/adminProductList.service");
 class AdminProductListController {
     adminProductListService = new AdminProductListService();
 
-    findProductList = async() => {
-        const productList = await this.adminProductListService();
+    findProductList = async (req, res, next) => {
+        const productList = await this.adminProductListService.findProductList();
 
-        return productList
+        res.status(201).json({ data: productList })
     }
 }
 

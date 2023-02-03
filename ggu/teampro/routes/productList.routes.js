@@ -5,7 +5,7 @@ const ProductListController = require("../controllers/productList.controller");
 const productListController = new ProductListController();
 
 router.get(
-    "/product",
+    "/productList",
     productListController.findProductAll
 );
 

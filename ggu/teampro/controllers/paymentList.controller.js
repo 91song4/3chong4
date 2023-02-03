@@ -3,10 +3,10 @@ const PaymentListService = require("../services/paymentList.service");
 class PaymentListController {
     PaymentListService = new PaymentListService();
 
-    findPaymentAll = async () => {
+    findPaymentAll = async (req, res, next) => {
         const PaymentList = await this.PaymentListService.findPaymentAll();
 
-        return PaymentList
+        res.status(201).json({ data: PaymentList })
     }
 }
 

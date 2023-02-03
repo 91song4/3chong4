@@ -1,10 +1,12 @@
-const {  } = require();
+const { orderInfo } = require("../models");
 
 class PaymentListRepository {
     findPaymentAll = async () => {
-        const paymentList = await asd.findAll();
+        const paymentList = await orderInfo.findAll({
+            
+        });
 
-        return paymentList
+        return paymentList;
     }
 };
 

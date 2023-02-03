@@ -4,7 +4,7 @@ class MemberListService {
     memberListRepository = new MemberListRepository();
 
     findMemberList = async() => {
-        const memberList = await this.memberListRepository.memberList();
+        const memberList = await this.memberListRepository.findMemberList();
 
         return memberList
     }

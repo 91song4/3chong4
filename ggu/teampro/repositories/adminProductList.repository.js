@@ -1,9 +1,10 @@
-const { product } = require("../models/product");
+const { product } = require("../models");
 
 class AdminProductListRepository {
     findProductList = async () => {
-        const productList = await asd.findAll();
-
+        console.log("1234")
+        const productList = await product.findAll();
+        console.log(productList, 321)
         return productList
     }
 }

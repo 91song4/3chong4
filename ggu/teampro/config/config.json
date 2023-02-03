@@ -1,8 +1,8 @@
 {
   "development": {
     "username": "root",
-    "password": 221114,
-    "database": "ec2-3-38-192-2.ap-northeast-2.compute.amazonaws.com",
+    "password": "221114",
+    "database": "5zozo",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },

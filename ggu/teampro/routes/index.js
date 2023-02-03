@@ -1,17 +1,23 @@
 const express = require("express");
 const router = express.Router();
 
-const productList = require("./productList.routes");
-const paymentList = require("./paymentList.routes");
-const adminProductList = require("./adminProductList.routes");
-const memberList = require("./memberList.routes");
+const productListRouter = require("./productList.routes");
+const paymentListRouter = require("./paymentList.routes");
+const adminProductListRouter = require("./adminProductList.routes");
+const memberListRouter = require("./memberList.routes");
+const productAddRouter = require("./productAdd.routes");
+const productDeleteRouter = require("./productDelete.routes");
+const productEditRouter = require("./productEdit.routes");
 
 router.use(
     "/",
-    productList,
-    paymentList,
-    adminProductList,
-    memberList
-),
+    productListRouter,
+    paymentListRouter,
+    adminProductListRouter,
+    memberListRouter,
+    productAddRouter,
+    productDeleteRouter,
+    productEditRouter,
+);
 
 module.exports = router;
