@@ -93,4 +93,45 @@ nest
 Nest.js 프로젝트 생성 명령어
 ```bash
 nest new nestjs
+실패시
+git clone https://github.com/nestjs/typescript-starter.git sparta-nest
+cd sparta-nest
+npm i
 ```
+
+<br>
+
+# Nest.js 코드분석 - main.ts
+```typescript
+import { NestFactory } from '@nestjs/core';
+import { AppModule } from './app.module';
+
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule);
+  await app.listen(3000);
+}
+bootstrap();
+
+const app = await NestFactory.create(AppModule);
+AppModule이라는 모듈을 루트 모듈로 사용하는 Nest.js 어플리케이션 인스턴스를 생성하는 문장입니다.
+```
+
+<br>
+
+# Nest.js 코드분석 - app.module.ts
+
+```typescript
+import { Module } from '@nestjs/common';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+
+@Module({
+  imports: [],
+  controllers: [AppController],
+  providers: [AppService],
+})
+export class AppModule {}
+
+데코레이터('@', Decorator)가 등장한다.
+```
+
