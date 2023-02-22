@@ -1,0 +1,25 @@
+{
+  "development": {
+    "username": "root",
+    "password": "wnghqkd726",
+    "database": "laundrif",
+    "host": "express-database.cg21gzirpdhp.ap-northeast-2.rds.amazonaws.com",
+    "dialect": "mysql"
+  },
+  "test": {
+    "username": "root",
+    "password": "wnghqkd726",
+    "database": "laundrif_test",
+    "host": "express-database.cg21gzirpdhp.ap-northeast-2.rds.amazonaws.com",
+    "dialect": "mysql",
+    "logging": false
+  },
+  "production": {
+    "username": "root",
+    "password": null,
+    "database": "database_production",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  }
+}
+

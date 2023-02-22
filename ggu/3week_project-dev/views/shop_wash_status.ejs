@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>::: Wash Status :::</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../static/css/reset.css" />
+    <link rel="stylesheet" href="../static/css/header.css" />
+    <link rel="stylesheet" href="../static/css/shop_wash_status.css" />
+    <script src="./static/js/status_update.js"></script>
+    <script src="./static/js/header_shop.js"></script>
+  </head>
+  <body>
+    <header>
+      <div class="header_wrap" id="header_wrap" name="header_wrap">
+    </header>
+
+    <main>
+      <div class="box_center">
+        <div class="shop_status_wrap">
+          <div class="wash_data">
+            <img
+              src="https://experiencelife.lifetime.life/wp-content/uploads/2022/06/ja22-we-sweat-clothes-smell-worse-than-others.jpg"
+              alt="세탁신청 사진"
+            />
+            <ul class="user_data">
+              <li class="shop_user_nickname">유저 닉네임</li>
+              <li class="shop_user_phone_number">유저 전화번호</li>
+              <li class="shop_user_address">
+                유저 주소 서울시 부산시 경기도 307
+              </li>
+              <li class="shop_user_extra">요청사항</li>
+            </ul>
+          </div>
+          <div class="wash_status">
+            <ul class="status_wrap">
+              <li class="status_1">수거중</li>
+              <li class="status_2">수거완료</li>
+              <li class="status_3">배송중</li>
+              <li class="status_4">배송완료</li>
+            </ul>
+          </div>
+
+          <form action="" id="shop_wash_status">
+            <fieldset></fieldset>
+          </form>
+          <input
+            class="status_update_btn"
+            type="button"
+            onclick="status_update()"
+            value="진행상황 업데이트 하기"
+          />
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

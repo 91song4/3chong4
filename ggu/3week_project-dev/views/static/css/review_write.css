@@ -1,0 +1,82 @@
+@import url(_variables.css);
+@import url(//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
+
+.box_center {
+    display: flex;
+    justify-content: center;
+    align-items:center;
+    min-height: calc(100vh - 66px);
+}
+
+.add_wrap {
+    width: 700px;
+    height: 700px;
+    position: relative;    
+    background-color: var(--point-color);
+    border-radius: 50px;
+    padding: 40px;
+}
+
+.form-group {
+    width: 620px;
+    height: 240px;
+    background-color: var(--sub-color-1);
+    margin-bottom: 10px;
+    color: var(--sub-color-2);
+    border: 1px solid var(--sub-color-2);
+    border-radius: 30px;
+    padding: 25px;
+}
+
+.review_write_btn {
+    position: absolute;
+    bottom: 40px;
+    width: 620px;
+    height: 40px;
+    background-color: var(--sub-color-1);
+    color: var(--point-color);
+    font-weight: 500;
+    border: 1px solid var(--sub-color-2);
+    border-radius: 30px;
+    text-align: center;
+    cursor: pointer;
+}
+
+
+
+/****** Style Star Rating Widget *****/
+
+.rating { 
+  position: absolute;
+  left: 130px;
+}
+
+.rating > input { display: none; } 
+.rating > label:before { 
+  margin: 10px 20px;
+  font-size: 3.2em;
+  font-family: FontAwesome;
+  display: inline-block;
+  content: "\f005";
+}
+
+.rating > .half:before { 
+  content: "\f089";
+  position: absolute;
+}
+
+.rating > label { 
+  color: #ddd; 
+ float: right; 
+}
+
+/***** CSS Magic to Highlight Stars on Hover *****/
+
+.rating > input:checked ~ label, /* show gold star when clicked */
+.rating:not(:checked) > label:hover, /* hover current star */
+.rating:not(:checked) > label:hover ~ label { color: #FFD700;  } /* hover previous stars in list */
+
+.rating > input:checked + label:hover, /* hover current star when changing rating */
+.rating > input:checked ~ label:hover,
+.rating > label:hover ~ input:checked ~ label, /* lighten current selection */
+.rating > input:checked ~ label:hover ~ label { color: #FFED85;  } 

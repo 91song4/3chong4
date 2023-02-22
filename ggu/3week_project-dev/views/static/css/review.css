@@ -1,0 +1,54 @@
+@import url(_variables.css);
+
+.review_wrap {
+    position: relative;
+    background-color: #fff;
+    width: 1240px;
+    height: 150px;
+    border-radius: 20px;
+    margin: 20px auto;
+    padding: 20px 60px;
+    color: var(--point-color);
+}
+
+.review_data_wrap {
+    font-weight: 500;
+    color: var(--sub-color-2);
+}
+
+.review_data_wrap > li {
+    float: left;
+    width: 200px;
+}
+
+.review_star_rating > img {
+    margin-left: 10px;
+    height: 15px;
+}
+
+.review_content {
+    position: absolute;
+    top: 50px;
+    font-weight: 500;
+}
+
+.review_wrap > button {
+    position: absolute;
+    right: 40px;
+    width: 100px;
+    height: 40px;
+    background-color: var(--sub-color-2);
+    color: #fff;
+    border-radius: 10px;
+    padding: 8px 0;
+    text-align: center;
+    cursor: pointer;
+}
+
+.review_edit {
+    top: 30px;
+}
+
+.review_delete {
+    bottom: 30px;
+}
