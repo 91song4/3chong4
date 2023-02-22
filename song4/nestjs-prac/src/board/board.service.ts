@@ -1,76 +1,35 @@
-import _ from 'lodash';
-import {
-  Injectable,
-  NotFoundException,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import { IArticle } from './model/article.model';
 import { v4 as uuid } from 'uuid';
-import { IArticle } from './article.model';
+import _ from 'lodash';
+import { ICreateArticleDto, TCreateArticleDto } from './dto/create-article.dto';
 
 @Injectable()
 export class BoardService {
   private articles: IArticle[] = [];
-  private articlesPassword = new Map();
+  private articlesPassword: Map<string, number> = new Map();
 
-  getArticles(): IArticle[] {
+  getArticles(): Array<IArticle> {
     return this.articles;
   }
 
-  getArticleById(id: string): IArticle {
-    const article: IArticle = this.articles.find(
-      (article) => article.id === id,
-    );
-
-    return article;
+  getArticleById(id: string): IArticle | null {
+    const article = this.articles.find((article) => article.id === id);
+    return _.isNil(article) ? null : article;
   }
 
-  createArticle({ title, content, password }): string {
-    const createArticle = { id: uuid(), title, content };
-    this.articles.push(createArticle);
-    this.articlesPassword.set(createArticle.id, password);
-
-    return createArticle.id;
-  }
-
-  updateArticle({ id, title, content, password }): IArticle {
-    const targetArticle = this.getArticleById(id);
-
-    if (_.isNil(targetArticle)) {
-      throw new NotFoundException(`Article not found. id ${id}`);
-    }
-
-    if (!this.isAuthenticate(targetArticle.id, password)) {
-      throw new UnauthorizedException(
-        `Password is not correct. id ${targetArticle.id}`,
-      );
-    }
-
-    targetArticle.title = title;
-    targetArticle.content = content;
-
-    return targetArticle;
-  }
-
-  deleteArticle(id: string, password: string): void {
-    const targetArticle = this.getArticleById(id);
-    if (_.isNil(targetArticle)) {
-      throw new NotFoundException(`Article not found. id ${id}`);
-    }
-
-    if (!this.isAuthenticate(targetArticle.id, password)) {
-      throw new UnauthorizedException(
-        `Password is not correct. id ${targetArticle.id}`,
-      );
-    }
-
-    this.articles = this.articles.filter((article) => article.id !== id);
-    this.articlesPassword.delete(id);
-  }
-
-  private isAuthenticate(id: string, password: string): boolean {
-    if (this.articlesPassword.get(id) === password) {
-      return true;
-    }
-    return false;
+  createArticle({ title, content, password }: ICreateArticleDto): number {
+    console.log({ title, content, password });
+    console.log({
+      title: typeof title,
+      content: typeof content,
+      password: typeof password,
+    });
+    const articleId = uuid();
+    const newArticle: IArticle = { id: articleId, title, content };
+    this.articles.push(newArticle);
+    this.articlesPassword.set(articleId, password);
+    console.log();
+    return 1;
   }
 }

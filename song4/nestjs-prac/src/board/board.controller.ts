@@ -1,19 +1,19 @@
 import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  Patch,
-  Post,
-  Delete,
-  UsePipes,
   ValidationPipe,
+  Controller,
+  UsePipes,
+  ParseIntPipe,
+  Get,
+  Post,
+  Body,
 } from '@nestjs/common';
-import { IArticle } from './article.model';
 import { BoardService } from './board.service';
-import { CreateArticleDto } from './dto/create-article.dto';
-import { DeleteArticleDto } from './dto/delete-article.dto';
-import { UpdateArticleDto } from './dto/update-article.dto';
+import {
+  CreateArticleDto,
+  ICreateArticleDto,
+  TCreateArticleDto,
+} from './dto/create-article.dto';
+import { IArticle } from './model/article.model';
 
 @Controller('board')
 export class BoardController {
@@ -24,44 +24,36 @@ export class BoardController {
     return this.boardService.getArticles();
   }
 
-  @Get('/articles/:id')
-  getArticleById(@Param('id') articleId: string): IArticle {
-    return this.boardService.getArticleById(articleId);
-  }
-
   @Post('/articles')
-  @UsePipes(ValidationPipe)
-  createArticle(@Body() createArticleDto: CreateArticleDto): string {
+  createArticle(@Body() data: TCreateArticleDto): number {
+    console.log('create1');
+    console.log(data);
     return this.boardService.createArticle({
-      title: createArticleDto.title,
-      content: createArticleDto.content,
-      password: createArticleDto.password,
+      title: data.title,
+      content: data.content,
+      password: data.password,
     });
   }
 
-  @Patch('/articles/:id')
-  @UsePipes(ValidationPipe)
-  updateArticle(
-    @Param('id') articleId: string,
-    @Body() updateArticleDto: UpdateArticleDto,
-  ): IArticle {
-    return this.boardService.updateArticle({
-      id: articleId,
-      title: updateArticleDto.title,
-      content: updateArticleDto.content,
-      password: updateArticleDto.password,
+  @Post('/articles2')
+  createArticle2(@Body() data: ICreateArticleDto): number {
+    console.log('create2');
+    console.log(data);
+    return this.boardService.createArticle({
+      title: data.title,
+      content: data.content,
+      password: data.password,
     });
   }
 
-  @Delete('/articles/:id')
-  @UsePipes(ValidationPipe)
-  deleteArticle(
-    @Param('id') articleId: string,
-    @Body() deleteArticleDto: DeleteArticleDto,
-  ): void {
-    return this.boardService.deleteArticle(
-      articleId,
-      deleteArticleDto.password,
-    );
+  @Post('/articles3')
+  createArticle3(@Body() data: CreateArticleDto): number {
+    console.log('create3');
+    console.log(data);
+    return this.boardService.createArticle({
+      title: data.title,
+      content: data.content,
+      password: data.password,
+    });
   }
 }

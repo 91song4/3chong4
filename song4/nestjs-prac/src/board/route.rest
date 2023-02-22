@@ -1,41 +1,13 @@
-# GetArticleAll
-GET http://localhost:3000/board/articles
-
-###
-
-# GetArticle
-GET http://localhost:3000/board/articles/276fcfb4-ac6d-46e1-bd41-74c5b097447a
-
-###
-
-# CreateArticle
-POST http://localhost:3000/board/articles
+POST http://localhost:3000/board/articles3
 Content-Type: application/json
 
 {
+  "id": "gg",
   "title": "this is title",
   "content": "this is content",
-  "password": "1234"
+  "password": 1234
 }
 
 ###
 
-# UpdateArticle
-PATCH http://localhost:3000/board/articles/15093dd8-00bc-4c21-96d8-634af387f277
-Content-Type: application/json
-
-{
-  "title": "this is update title",
-  "content": "this is update content",
-  "password": "1234"
-}
-
-###
-
-# DeleteArticle
-DELETE http://localhost:3000/board/articles/15093dd8-00bc-4c21-96d8-634af387f277
-Content-Type: application/json
-
-{
-  "password":"1234"
-}
+GET http://localhost:3000/board/articles
