@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@nestjs/cli": "^9.2.0",
     "uuid": "^9.0.0"
   }
 }
