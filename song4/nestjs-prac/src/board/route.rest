@@ -1,3 +1,0 @@
-# 게시물 상세조회 API
-GET http://localhost:3000/board/article/1
-
