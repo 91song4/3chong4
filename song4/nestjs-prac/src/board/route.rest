@@ -1,0 +1,41 @@
+# 전체조회 API
+GET http://localhost:3000/board/articles
+
+###
+
+# 개별조회 API
+GET http://localhost:3000/board/articles/1
+
+###
+
+# 생성 API
+POST http://localhost:3000/board/articles
+Content-Type: application/json
+
+{
+  "title": "this is title2",
+  "content": "this is content2",
+  "password": 12234
+}
+
+###
+
+# 수정 API
+PUT http://localhost:3000/board/articles/3
+Content-Type: application/json
+
+{
+  "title": "this is update title2",
+  "content": "this is update content2",
+  "password": 12234
+}
+
+###
+
+# 삭제 API
+DELETE http://localhost:3000/board/articles/1
+Content-Type: application/json
+
+{
+  "password": 1234
+}

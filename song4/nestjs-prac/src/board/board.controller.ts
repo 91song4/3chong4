@@ -23,7 +23,7 @@ export class BoardController {
 
   @Get('/articles/:id')
   async getArticleById(@Param('id') articleId: number) {
-    return await this.getArticleById(articleId);
+    return await this.boardService.getArticleById(articleId);
   }
 
   @Post('/articles')
