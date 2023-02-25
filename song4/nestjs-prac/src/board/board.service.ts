@@ -3,10 +3,17 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Article } from './article.entity';
 import { CreateArticleDto } from './dto/create-article.dto';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class BoardService {
+  constructor(
+    @InjectRepository(Article) private articleRepository: Repository<Article>,
+  ) {}
+  
   private articles = [];
   private articlesPassword = new Map<number, number>();
 

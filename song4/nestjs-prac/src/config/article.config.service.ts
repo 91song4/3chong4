@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
+import { Article } from '../board/article.entity';
 
 @Injectable()
 export class TypeOrmConfigService implements TypeOrmOptionsFactory {
@@ -15,7 +16,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       database: this.configService.get<string>('DATABASE_NAME'),
       port: this.configService.get<number>('DATABASE_PORT'),
       synchronize: this.configService.get<boolean>('DATABASE_SYNCHRONIZE'),
-      entities: [],
+      entities: [Article],
     };
   }
 }
