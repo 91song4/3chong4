@@ -1,80 +1,73 @@
+import { UpdateArticleDto } from './dto/update-article.dto';
 import { CreateArticleDto } from './dto/create-article.dto';
-import { Injectable } from '@nestjs/common';
-import _ from 'lodash';
+import { IArticle } from './model/article.model';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
+import { DeleteArticleDto } from './dto/delete-article.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Article } from './entities/article.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class BoardService {
-  private articles: IArticle[] = [];
-  private articlePassword = new Map<number, number>();
+  constructor(
+    @InjectRepository(Article)
+    private readonly articleRepository: Repository<Article>,
+  ) {}
 
-  // 전체 조회
+  private articles: IArticle[] = [];
+  private articlesPassword = new Map<number, number>();
+
   getArticles(): IArticle[] {
     return this.articles;
   }
 
-  // 한개 조회
-  getArticleById(articleId: number): IArticle | null {
-    try {
-      const targetArticle = this.articles.find(
-        (article) => article.id === articleId,
-      );
-
-      if (!!targetArticle === false) {
-        return null;
-      }
-
-      return targetArticle;
-    } catch (error) {
-      throw error;
+  getArticleById(id: number): IArticle {
+    const article = this.articles.find((article) => article.id === id);
+    if (!article) {
+      throw new NotFoundException('해당 게시물을 찾을 수 없습니다.');
     }
-  }
-  // 생성
-  createArticle({ title, content, password }: CreateArticleDto): number {
-    try {
-      const articleId: number = this.articles.length + 1;
-
-      this.articles.push({ id: articleId, title, content });
-      this.articlePassword.set(articleId, password);
-
-      return articleId;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  // 수정
-  updateArticle(
-    id: number,
-    title: string,
-    content: string,
-    password: number,
-  ): IArticle {
-    if (this.articlePassword.get(id) !== password) {
-      throw new Error('비밀번호가 틀립니다.');
-    }
-    const article = this.getArticleById(id);
-    article.title = title;
-    article.content = content;
-
     return article;
   }
 
-  // 삭제
-  deleteArticle(id: number, password: number): number {
-    // 아이디가 있는지 없는지 체크
-    if (this.getArticleById(id) === null) {
-      throw new Error('아이디가 없습니다.');
+  createArticle({ title, content, password }: CreateArticleDto): number {
+    const articleId = this.articles.length + 1;
+    this.articles.push({ id: articleId, title, content });
+    this.articlesPassword.set(articleId, password);
+    return articleId;
+  }
+
+  updateArticle({ id, title, content, password }: UpdateArticleDto): number {
+    const article = this.getArticleById(id);
+    if (this.checkPassword(id, password) === false) {
+      throw new UnauthorizedException('비밀번호가 일치하지 않습니다.');
     }
 
-    // 비밀번호가 맞는지 안맞는지 체크
-    if (this.articlePassword.get(id) !== password) {
-      throw new Error('비밀번호가 틀립니다.');
-    }
-    // 삭제로직
-    this.articles = this.articles.filter((article) => {
-      article.id !== id;
-    });
+    article.title = title;
+    article.content = content;
 
-    return id;
+    return article.id;
+  }
+
+  deleteArticle({ id, password }: DeleteArticleDto): number {
+    const article = this.getArticleById(id);
+    if (this.checkPassword(id, password) === false) {
+      throw new UnauthorizedException('비밀번호가 일치하지 않습니다.');
+    }
+    this.articles = this.articles.filter((article) => article.id !== id);
+    this.articlesPassword.delete(id);
+
+    return article.id;
+  }
+
+  private checkPassword(id: number, password: number): boolean {
+    if (this.articlesPassword.get(id) !== password) {
+      return false;
+    }
+
+    return true;
   }
 }

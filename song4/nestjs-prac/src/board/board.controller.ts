@@ -1,6 +1,14 @@
+import {
+  DeleteArticleBodyDto,
+  DeleteArticleDto,
+} from './dto/delete-article.dto';
 import { CreateArticleDto } from './dto/create-article.dto';
-import { UpdateArticleDto } from './dto/update-article.dto';
-import { DeleteAritcleDto } from './dto/delete-article.dto';
+import {
+  UpdateArticleBodyDto,
+  UpdateArticleDto,
+} from './dto/update-article.dto';
+import { IArticle } from './model/article.model';
+import { BoardService } from './board.service';
 import {
   Body,
   Controller,
@@ -12,53 +20,56 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { BoardService } from './board.service';
 
 @Controller('board')
+@UsePipes(new ValidationPipe({ transform: true }))
 export class BoardController {
   constructor(private readonly boardService: BoardService) {}
-  // api / 빠짐
-  @Get('articles')
+
+  @Get('/articles')
   getArticles(): IArticle[] {
     return this.boardService.getArticles();
   }
 
-  // /board/articles//1
   @Get('/articles/:id')
-  @UsePipes(new ValidationPipe({ transform: true }))
   getArticleById(@Param('id') articleId: number): IArticle {
+    console.log(__dirname);
     return this.boardService.getArticleById(articleId);
   }
 
-  @Post('articles')
-  @UsePipes(ValidationPipe)
-  createArticle(@Body() data: CreateArticleDto): number {
-    return this.boardService.createArticle(data);
+  @Post('/articles')
+  createArticle(@Body() body: CreateArticleDto): number {
+    const createArticleData = {
+      title: body.title,
+      content: body.content,
+      password: body.password,
+    };
+    return this.boardService.createArticle(createArticleData);
   }
 
-  // handler-level pipe 처리 해야함.
-  @Put('articles/:id')
-  @UsePipes(new ValidationPipe({ transform: true }))
+  @Put('/articles/:id')
   updateArticle(
     @Param('id') articleId: number,
-    @Body() data: UpdateArticleDto,
-  ): IArticle {
-    return this.boardService.updateArticle(
-      articleId,
-      data.title,
-      data.content,
-      data.password,
-    );
+    @Body() body: UpdateArticleBodyDto,
+  ): number {
+    const updateArticleDto: UpdateArticleDto = {
+      id: articleId,
+      title: body.title,
+      content: body.content,
+      password: body.password,
+    };
+    return this.boardService.updateArticle(updateArticleDto);
   }
 
-  // handler-level pipe 처리 해야함.
-  @Delete('articles/:id')
-  @UsePipes(new ValidationPipe({ transform: true }))
-  deleteAritcle(
+  @Delete('/articles/:id')
+  deleteArticle(
     @Param('id') articleId: number,
-    @Body() { password }: DeleteAritcleDto,
+    @Body() body: DeleteArticleBodyDto,
   ): number {
-    console.log({ articleId }, typeof articleId);
-    return this.boardService.deleteArticle(articleId, password);
+    const deleteArticleDto: DeleteArticleDto = {
+      id: articleId,
+      password: body.password,
+    };
+    return this.boardService.deleteArticle(deleteArticleDto);
   }
 }
