@@ -30,6 +30,6 @@ export class Article {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @DeleteDateColumn()
-  delatedAt: Date | null;
+  @DeleteDateColumn({ default: null })
+  deletedAt: Date | null;
 }

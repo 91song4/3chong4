@@ -13,54 +13,54 @@ export class BoardService {
   constructor(
     @InjectRepository(Article) private articleRepository: Repository<Article>,
   ) {}
-  
-  private articles = [];
-  private articlesPassword = new Map<number, number>();
 
-  getArticles() {
-    return this.articles;
+  async getArticles() {
+    return await this.articleRepository.find({
+      select: ['id', 'author', 'title', 'createdAt'],
+      where: { deletedAt: null },
+    });
   }
 
-  getArticleById(id: number) {
-    return this.articles.find((article) => article.id === id);
+  async getArticleById(id: number) {
+    return await this.articleRepository.findOne({
+      select: ['author', 'title', 'content', 'createdAt', 'updatedAt'],
+      where: { id, deletedAt: null },
+    });
   }
 
-  createArticle({ title, content, password }: CreateArticleDto): number {
-    const articleId: number = this.articles.length + 1;
-    this.articles.push({ id: articleId, title, content, password });
-    this.articlesPassword.set(articleId, password);
-    return articleId;
+  createArticle({ title, content, password }: CreateArticleDto): void {
+    this.articleRepository.insert({
+      author: 'test',
+      title,
+      content,
+      password: password.toString(),
+    });
   }
 
-  updateArticle({ id, title, content, password }): number {
-    const article = this.getArticleById(id);
+  async updateArticle({ id, title, content, password }) {
+    await this.verifyPassword(id, password);
+
+    this.articleRepository.update(id, { title, content });
+  }
+
+  async deleteArticle({ id, password }) {
+    await this.verifyPassword(id, password);
+
+    this.articleRepository.softDelete(id);
+  }
+
+  private async verifyPassword(id: number, password: number) {
+    const article = await this.articleRepository.findOne({
+      select: ['password'],
+      where: { id, deletedAt: null },
+    });
+
     if (!!article === false) {
       throw new NotFoundException('게시물이 없습니다.');
     }
 
-    if (this.articlesPassword.get(id) !== password) {
+    if (article.password !== password.toString()) {
       throw new UnauthorizedException('비밀번호가 일치하지 않습니다.');
     }
-
-    article.title = title;
-    article.content = content;
-
-    return article.id;
-  }
-
-  deleteArticle({ id, password }): number {
-    const article = this.getArticleById(id);
-    if (!!article === false) {
-      throw new NotFoundException('게시물이 없습니다.');
-    }
-
-    if (this.articlesPassword.get(id) !== password) {
-      throw new UnauthorizedException('비밀번호가 일치하지 않습니다.');
-    }
-
-    this.articles = this.articles.filter((article) => article.id !== id);
-    this.articlesPassword.delete(id);
-
-    return article.id;
   }
 }

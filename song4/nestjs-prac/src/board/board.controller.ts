@@ -27,7 +27,7 @@ export class BoardController {
   }
 
   @Post('/articles')
-  createArticle(@Body() body: CreateArticleDto): number {
+  createArticle(@Body() body: CreateArticleDto) {
     return this.boardService.createArticle({
       title: body.title,
       content: body.content,
